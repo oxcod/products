@@ -47,26 +47,29 @@
         <!-- Add Product Form -->
         <div class="add-product-form">
             <h3>Add New Product</h3>
-            <form hx-post="/products" 
+            <form id="add-product-form"
+                  hx-post="/products" 
                   hx-target="#products-container" 
                   hx-swap="innerHTML">
                 <div class="form-group">
                     <label for="title">Product Title *</label>
-                    <sl-input 
+                    <input 
+                        type="text"
                         id="title" 
                         name="title" 
+                        class="form-control"
                         placeholder="Enter product title"
                         required>
-                    </sl-input>
                 </div>
                 
                 <div class="form-group">
                     <label for="productType">Product Type</label>
-                    <sl-input 
+                    <input 
+                        type="text"
                         id="productType" 
                         name="productType" 
+                        class="form-control"
                         placeholder="Enter product type (optional)">
-                    </sl-input>
                 </div>
                 
                 <sl-button type="submit" variant="success">
