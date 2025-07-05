@@ -79,15 +79,21 @@
                     <td th:text="${#temporals.format(item.product.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${#temporals.format(item.product.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
-                        <a th:href="@{/products/{id}/edit(id=${item.product.id})}" style="color: #007bff; text-decoration: none; margin-right: 1rem;">
+                        <a href="#" 
+                           th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
+                           hx-target="#modal-content"
+                           hx-swap="innerHTML"
+                           style="color: #007bff; text-decoration: none; margin-right: 1rem;">
                             Edit
                         </a>
                         <a href="#" 
+                           class="delete-btn"
+                           th:data-product-id="${item.product.id}"
                            th:attr="hx-delete=@{/products/{id}(id=${item.product.id})}"
-                           hx-confirm="Are you sure you want to delete this product?"
                            hx-target="#product-table-fragment"
                            hx-swap="outerHTML"
-                           style="color: #dc3545; text-decoration: none;">
+                           hx-trigger="confirmed"
+                           onclick="return handleDeleteClick(event, this)">
                             Delete
                         </a>
                     </td>

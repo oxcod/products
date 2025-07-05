@@ -114,7 +114,7 @@ class ProductController(
             return "redirect:/"
         }
         model.addAttribute("product", product)
-        return "edit-product"
+        return "fragments/edit-form :: edit-form"
     }
     
     @PostMapping("/products/{id}/update")
@@ -122,6 +122,8 @@ class ProductController(
         @PathVariable id: Long,
         @RequestParam title: String,
         @RequestParam(required = false) productType: String?,
+        @RequestParam(defaultValue = "id") sortBy: String,
+        @RequestParam(defaultValue = "asc") sortOrder: String,
         model: Model
     ): String {
         val existingProduct = productRepository.findById(id)
@@ -132,7 +134,8 @@ class ProductController(
             )
             productRepository.save(updatedProduct)
         }
-        return "redirect:/"
+        // Return the products table with current sort parameters
+        return getProducts(0, null, sortBy, sortOrder, model)
     }
     
     @DeleteMapping("/products/{id}")
