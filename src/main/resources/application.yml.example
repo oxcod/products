@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: products
+  datasource:
+    url: jdbc:postgresql://localhost:5432/products
+    username: postgres
+    password: your-password-here  # Change this to your actual password
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:db/migration

@@ -1,0 +1,20 @@
+### Test Product Application
+
+### 1. Get home page
+GET http://localhost:8080/
+
+### 2. Get products list (HTMX request)
+GET http://localhost:8080/products
+Accept: text/html
+
+### 3. Add a new product
+POST http://localhost:8080/products
+Content-Type: application/x-www-form-urlencoded
+
+title=Test Product&productType=Test Type
+
+### 4. Add product without type
+POST http://localhost:8080/products
+Content-Type: application/x-www-form-urlencoded
+
+title=Simple Product

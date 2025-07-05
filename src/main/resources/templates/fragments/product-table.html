@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="product-table" id="product-table-fragment">
+        <table class="product-table" th:if="${products != null and !products.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Product Type</th>
+                    <th>Variants</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${products}">
+                    <td th:text="${item.product.id}"></td>
+                    <td th:text="${item.product.title}"></td>
+                    <td th:text="${item.product.productType ?: 'N/A'}"></td>
+                    <td>
+                        <div class="variant-list" th:if="${!item.variants.isEmpty()}">
+                            <div th:each="variant : ${item.variants}">
+                                <small>
+                                    <span th:text="${variant.title}"></span>
+                                    <span th:if="${variant.price}" th:text="' - ' + ${variant.price}"></span>
+                                    <span th:if="${variant.available != null}">
+                                        (<span th:text="${variant.available ? 'Available' : 'Not Available'}"></span>)
+                                    </span>
+                                </small>
+                            </div>
+                        </div>
+                        <div th:if="${item.variants.isEmpty()}">
+                            <small>No variants</small>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div th:if="${products == null or products.isEmpty()}" style="padding: 2rem; text-align: center; color: #666;">
+            No products found. The scheduled job will sync products automatically.
+        </div>
+        
+        <!-- Add Product Form -->
+        <div class="add-product-form">
+            <h3>Add New Product</h3>
+            <form hx-post="/products" 
+                  hx-target="#products-container" 
+                  hx-swap="innerHTML">
+                <div class="form-group">
+                    <label for="title">Product Title *</label>
+                    <sl-input 
+                        id="title" 
+                        name="title" 
+                        placeholder="Enter product title"
+                        required>
+                    </sl-input>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productType">Product Type</label>
+                    <sl-input 
+                        id="productType" 
+                        name="productType" 
+                        placeholder="Enter product type (optional)">
+                    </sl-input>
+                </div>
+                
+                <sl-button type="submit" variant="success">
+                    Add Product
+                </sl-button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
