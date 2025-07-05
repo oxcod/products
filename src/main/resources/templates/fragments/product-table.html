@@ -9,6 +9,8 @@
                     <th>Title</th>
                     <th>Product Type</th>
                     <th>Variants</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +34,8 @@
                             <small>No variants</small>
                         </div>
                     </td>
+                    <td th:text="${#temporals.format(item.product.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(item.product.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
                 </tr>
             </tbody>
         </table>

@@ -9,7 +9,7 @@ class VariantRepository(private val jdbcClient: JdbcClient) {
 
     fun findByProductId(productId: Long): List<Variant> {
         return jdbcClient.sql("""
-            SELECT id, product_id, title, price, available 
+            SELECT id, product_id, title, price, available, created_at, updated_at 
             FROM variant 
             WHERE product_id = :productId
         """)
@@ -20,21 +20,25 @@ class VariantRepository(private val jdbcClient: JdbcClient) {
                     productId = rs.getLong("product_id"),
                     title = rs.getString("title"),
                     price = rs.getString("price"),
-                    available = rs.getObject("available") as? Boolean
+                    available = rs.getObject("available") as? Boolean,
+                    createdAt = rs.getTimestamp("created_at")?.toLocalDateTime(),
+                    updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime()
                 )
             }
             .list()
     }
 
     fun findAll(): List<Variant> {
-        return jdbcClient.sql("SELECT id, product_id, title, price, available FROM variant")
+        return jdbcClient.sql("SELECT id, product_id, title, price, available, created_at, updated_at FROM variant")
             .query { rs, _ ->
                 Variant(
                     id = rs.getLong("id"),
                     productId = rs.getLong("product_id"),
                     title = rs.getString("title"),
                     price = rs.getString("price"),
-                    available = rs.getObject("available") as? Boolean
+                    available = rs.getObject("available") as? Boolean,
+                    createdAt = rs.getTimestamp("created_at")?.toLocalDateTime(),
+                    updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime()
                 )
             }
             .list()
