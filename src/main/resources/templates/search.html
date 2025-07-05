@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products Application</title>
+    <title>Search Products</title>
     
     <!-- Shoelace CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
@@ -38,8 +38,33 @@
             margin-bottom: 1rem;
         }
         
-        .button-container {
+        .search-container {
             margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
         }
         
         .product-table {
@@ -70,78 +95,38 @@
             color: #666;
         }
         
-        .add-product-form {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        sl-button {
-            margin-right: 1rem;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-        
-        .form-control:focus {
-            color: #495057;
-            background-color: #fff;
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-        }
-        
-        .product-table th a {
-            color: #495057;
-            text-decoration: none;
-            display: block;
-        }
-        
-        .product-table th a:hover {
-            color: #007bff;
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Products Management</h1>
+            <a href="/" class="back-link">&larr; Back to Products</a>
+            <h1>Search Products</h1>
         </div>
         
-        <div class="button-container">
-            <sl-button 
-                variant="primary" 
-                size="medium"
-                hx-get="/products" 
-                hx-target="#products-container"
-                hx-swap="innerHTML">
-                Load Products
-            </sl-button>
+        <div class="search-container">
+            <input 
+                type="text" 
+                class="search-input" 
+                placeholder="Search products by title..."
+                name="query"
+                hx-get="/search/products"
+                hx-trigger="keyup changed delay:300ms"
+                hx-target="#search-results"
+                hx-swap="innerHTML"
+            >
         </div>
         
-        <div id="products-container">
-            <!-- Product table will be loaded here -->
+        <div id="search-results">
+            <!-- Search results will be loaded here -->
+            <div class="no-results">
+                Start typing to search for products...
+            </div>
         </div>
     </div>
     

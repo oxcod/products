@@ -21,6 +21,67 @@ class ProductRepository(private val jdbcClient: JdbcClient) {
             .list()
     }
 
+    fun count(): Int {
+        return jdbcClient.sql("SELECT COUNT(*) FROM product")
+            .query(Int::class.java)
+            .single()
+    }
+    
+    fun findAllPaginated(offset: Int, limit: Int): List<Product> {
+        return jdbcClient.sql("SELECT id, title, product_type, created_at, updated_at FROM product ORDER BY id LIMIT :limit OFFSET :offset")
+            .param("limit", limit)
+            .param("offset", offset)
+            .query { rs, _ ->
+                Product(
+                    id = rs.getLong("id"),
+                    title = rs.getString("title"),
+                    productType = rs.getString("product_type"),
+                    createdAt = rs.getTimestamp("created_at")?.toLocalDateTime(),
+                    updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime()
+                )
+            }
+            .list()
+    }
+    
+    fun findAllPaginatedSorted(offset: Int, limit: Int, sortBy: String, sortOrder: String): List<Product> {
+        val validSortColumns = setOf("id", "title")
+        val column = if (sortBy in validSortColumns) sortBy else "id"
+        val order = if (sortOrder.lowercase() == "desc") "DESC" else "ASC"
+        
+        return jdbcClient.sql("SELECT id, title, product_type, created_at, updated_at FROM product ORDER BY $column $order LIMIT :limit OFFSET :offset")
+            .param("limit", limit)
+            .param("offset", offset)
+            .query { rs, _ ->
+                Product(
+                    id = rs.getLong("id"),
+                    title = rs.getString("title"),
+                    productType = rs.getString("product_type"),
+                    createdAt = rs.getTimestamp("created_at")?.toLocalDateTime(),
+                    updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime()
+                )
+            }
+            .list()
+    }
+    
+    fun searchByTitleSorted(query: String, sortBy: String, sortOrder: String): List<Product> {
+        val validSortColumns = setOf("id", "title")
+        val column = if (sortBy in validSortColumns) sortBy else "id"
+        val order = if (sortOrder.lowercase() == "desc") "DESC" else "ASC"
+        
+        return jdbcClient.sql("SELECT id, title, product_type, created_at, updated_at FROM product WHERE LOWER(title) LIKE LOWER(:query) ORDER BY $column $order")
+            .param("query", "%$query%")
+            .query { rs, _ ->
+                Product(
+                    id = rs.getLong("id"),
+                    title = rs.getString("title"),
+                    productType = rs.getString("product_type"),
+                    createdAt = rs.getTimestamp("created_at")?.toLocalDateTime(),
+                    updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime()
+                )
+            }
+            .list()
+    }
+    
     fun findById(id: Long): Product? {
         return jdbcClient.sql("SELECT id, title, product_type, created_at, updated_at FROM product WHERE id = :id")
             .param("id", id)
@@ -37,6 +98,21 @@ class ProductRepository(private val jdbcClient: JdbcClient) {
             .orElse(null)
     }
 
+    fun searchByTitle(query: String): List<Product> {
+        return jdbcClient.sql("SELECT id, title, product_type, created_at, updated_at FROM product WHERE LOWER(title) LIKE LOWER(:query)")
+            .param("query", "%$query%")
+            .query { rs, _ ->
+                Product(
+                    id = rs.getLong("id"),
+                    title = rs.getString("title"),
+                    productType = rs.getString("product_type"),
+                    createdAt = rs.getTimestamp("created_at")?.toLocalDateTime(),
+                    updatedAt = rs.getTimestamp("updated_at")?.toLocalDateTime()
+                )
+            }
+            .list()
+    }
+    
     fun save(product: Product): Product {
         jdbcClient.sql("""
             INSERT INTO product (id, title, product_type) 
@@ -52,6 +128,12 @@ class ProductRepository(private val jdbcClient: JdbcClient) {
         return product
     }
 
+    fun deleteById(id: Long) {
+        jdbcClient.sql("DELETE FROM product WHERE id = :id")
+            .param("id", id)
+            .update()
+    }
+    
     fun deleteAll() {
         jdbcClient.sql("DELETE FROM product").update()
     }

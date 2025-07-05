@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products Application</title>
+    <title>Edit Product</title>
     
     <!-- Shoelace CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
-    
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     
     <!-- Custom CSS -->
     <style>
@@ -21,7 +18,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
             background-color: white;
             padding: 2rem;
@@ -38,57 +35,25 @@
             margin-bottom: 1rem;
         }
         
-        .button-container {
-            margin-bottom: 2rem;
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #007bff;
+            text-decoration: none;
         }
         
-        .product-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        
-        .product-table th,
-        .product-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .product-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-        
-        .product-table tr:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .variant-list {
-            font-size: 0.9em;
-            color: #666;
-        }
-        
-        .add-product-form {
-            background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 2rem;
+        .back-link:hover {
+            text-decoration: underline;
         }
         
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-        }
-        
-        sl-button {
-            margin-right: 1rem;
         }
         
         .form-control {
@@ -112,37 +77,60 @@
             box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
         }
         
-        .product-table th a {
-            color: #495057;
-            text-decoration: none;
-            display: block;
-        }
-        
-        .product-table th a:hover {
-            color: #007bff;
+        .button-group {
+            display: flex;
+            gap: 1rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Products Management</h1>
+            <a href="/" class="back-link">&larr; Back to Products</a>
+            <h1>Edit Product</h1>
         </div>
         
-        <div class="button-container">
-            <sl-button 
-                variant="primary" 
-                size="medium"
-                hx-get="/products" 
-                hx-target="#products-container"
-                hx-swap="innerHTML">
-                Load Products
-            </sl-button>
-        </div>
-        
-        <div id="products-container">
-            <!-- Product table will be loaded here -->
-        </div>
+        <form th:action="@{/products/{id}/update(id=${product.id})}" method="post">
+            <div class="form-group">
+                <label for="productId">Product ID</label>
+                <input 
+                    type="text" 
+                    id="productId" 
+                    class="form-control" 
+                    th:value="${product.id}" 
+                    disabled>
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Product Title *</label>
+                <input 
+                    type="text" 
+                    id="title" 
+                    name="title" 
+                    class="form-control" 
+                    th:value="${product.title}" 
+                    required>
+            </div>
+            
+            <div class="form-group">
+                <label for="productType">Product Type</label>
+                <input 
+                    type="text" 
+                    id="productType" 
+                    name="productType" 
+                    class="form-control" 
+                    th:value="${product.productType}">
+            </div>
+            
+            <div class="button-group">
+                <sl-button type="submit" variant="success">
+                    Update Product
+                </sl-button>
+                <sl-button variant="neutral" onclick="window.location.href='/'">
+                    Cancel
+                </sl-button>
+            </div>
+        </form>
     </div>
     
     <!-- Shoelace JS -->
