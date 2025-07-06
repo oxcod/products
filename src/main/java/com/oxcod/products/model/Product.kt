@@ -1,13 +1,11 @@
-package xyz.pkq.products.model
+package com.oxcod.products.model
 
 import java.time.LocalDateTime
 
-data class Variant(
+data class Product(
     val id: Long,
-    val productId: Long,
     val title: String,
-    val price: String?,
-    val available: Boolean?,
+    val productType: String?,
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null
 )

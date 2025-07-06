@@ -1,4 +1,4 @@
-package xyz.pkq.products;
+package com.oxcod.products;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

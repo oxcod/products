@@ -1,11 +1,11 @@
-package xyz.pkq.products.controller
+package com.oxcod.products.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
-import xyz.pkq.products.model.Product
-import xyz.pkq.products.repository.ProductRepository
-import xyz.pkq.products.repository.VariantRepository
+import com.oxcod.products.model.Product
+import com.oxcod.products.repository.ProductRepository
+import com.oxcod.products.repository.VariantRepository
 
 @Controller
 class ProductController(

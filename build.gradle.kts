@@ -5,11 +5,11 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "xyz.pkq"
+group = "com.oxcod"
 version = "0.0.1-SNAPSHOT"
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(24)
 }
 
 repositories {

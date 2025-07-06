@@ -1,4 +1,4 @@
-package xyz.pkq.products
+package com.oxcod.products
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

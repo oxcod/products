@@ -1,4 +1,4 @@
-package xyz.pkq.products.dto
+package com.oxcod.products.dto
 
 data class ProductWithVariants(
     val product: Product,

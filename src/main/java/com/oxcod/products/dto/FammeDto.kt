@@ -1,4 +1,4 @@
-package xyz.pkq.products.dto
+package com.oxcod.products.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

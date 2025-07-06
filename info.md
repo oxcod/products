@@ -54,3 +54,10 @@ header
 button to load products into UI
 table with products
 Form to add new products (can maybe show up after table is loaded). Again, using HTMX to update the table without a full page reload.
+
+=====
+V1.0
+A new page with a search box that lets you search for products by title. Active search that updates the table as you type.
+On the original page where you load the products, there should be a link to update the product details that takes you to a new page to update the product.
+Add a delete button to delete a product from the database, make sure to have a
+One more feature, Pagination, every page shows 8 records default.
