@@ -34,7 +34,6 @@ Displays a button to load products
 When the button is clicked, it fetches products from a Postgres database and displays them in a table.
 Lets you add a new product via a form, which is then saved to the database and updates the table without a page reload.
 The DB has been populated with a scheduled job that fetches products details from https://famme.no/products.json. Limit number of products you save to 50.
-
 Note that one product can have multiple variants, so the json response from that endpoint does not necessarily translate cleanly to one database table. Solution: JSONB or multiple tables with foreign keys.
 
 You also don’t need to save all the fields from the json response, only the ones you think is most relevant. Choose a few 3-5 fields at most to make your life easy.
@@ -61,3 +60,13 @@ A new page with a search box that lets you search for products by title. Active 
 On the original page where you load the products, there should be a link to update the product details that takes you to a new page to update the product.
 Add a delete button to delete a product from the database, make sure to have a
 One more feature, Pagination, every page shows 8 records default.
+
+V1.1
+1. fix old versions of frontend libraries
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
+<!-- HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.11"></script>
+2. instead of using shoelace, use webawesome.com (it is Shoelace 3.0, same developer behind it)
+3. No hardcoding of colors, use colors from the palette: https://webawesome.com/docs/tokens/color/
+4. Replace all chinese text with english
+5. Look at other utilities, for consistency of text, use https://webawesome.com/docs/utilities/text/ for example.
