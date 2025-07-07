@@ -104,7 +104,7 @@
         <!-- Pagination controls -->
         <div th:if="${totalPages > 1 and (query == null or query.isEmpty())}" style="margin-top: 1.5rem; text-align: center;">
             <div style="display: inline-flex; gap: 0.5rem; align-items: center;">
-                <sl-button 
+                <wa-button
                     th:if="${currentPage > 0}"
                     variant="default" 
                     size="small"
@@ -112,18 +112,18 @@
                     hx-target="#product-table-fragment"
                     hx-swap="outerHTML">
                     Previous
-                </sl-button>
+                </wa-button>
                 
                 <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                       style="display: inline-block;">
-                    <sl-button 
+                    <wa-button
                         th:if="${pageNum == currentPage}"
                         variant="primary" 
                         size="small"
                         disabled>
                         <span th:text="${pageNum + 1}"></span>
-                    </sl-button>
-                    <sl-button 
+                    </wa-button>
+                    <wa-button
                         th:if="${pageNum != currentPage}"
                         variant="default" 
                         size="small"
@@ -131,10 +131,10 @@
                         hx-target="#product-table-fragment"
                         hx-swap="outerHTML">
                         <span th:text="${pageNum + 1}"></span>
-                    </sl-button>
+                    </wa-button>
                 </span>
                 
-                <sl-button 
+                <wa-button
                     th:if="${currentPage < totalPages - 1}"
                     variant="default" 
                     size="small"
@@ -142,7 +142,7 @@
                     hx-target="#product-table-fragment"
                     hx-swap="outerHTML">
                     Next
-                </sl-button>
+                </wa-button>
             </div>
         </div>
         
@@ -183,9 +183,9 @@
                         placeholder="Enter product type (optional)">
                 </div>
                 
-                <sl-button type="submit" variant="success">
+                <wa-button type="submit" variant="success">
                     Add Product
-                </sl-button>
+                </wa-button>
             </form>
         </div>
     </div>

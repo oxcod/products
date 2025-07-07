@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" class="wa-theme-shoelace">
 <body>
     <div th:fragment="edit-form" class="edit-modal-content">
         <div class="modal-header">
@@ -47,13 +47,13 @@
                     th:value="${product.productType}">
             </div>
             
-            <div class="button-group">
-                <sl-button type="submit" variant="success">
+            <div>
+                <wa-button type="submit" variant="success">
                     Update Product
-                </sl-button>
-                <sl-button variant="neutral" onclick="closeEditModal()">
+                </wa-button>
+                <wa-button variant="neutral" onclick="closeEditModal()">
                     Cancel
-                </sl-button>
+                </wa-button>
             </div>
         </form>
     </div>

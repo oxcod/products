@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" class="wa-theme-shoelace">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Application</title>
-    
-    <!-- Shoelace CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
-    
-    <!-- HTMX -->
-    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
-    
+
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/themes/shoelace.css" />
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/webawesome.css" />
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/webawesome.loader.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.6/dist/htmx.min.js"></script>
     <!-- Custom CSS -->
     <style>
         body {
@@ -87,7 +85,7 @@
             font-weight: 500;
         }
         
-        sl-button {
+        wa-button {
             margin-right: 1rem;
         }
         
@@ -210,14 +208,13 @@
         </div>
         
         <div class="button-container">
-            <sl-button 
-                variant="primary" 
-                size="medium"
-                hx-get="/products" 
-                hx-target="#products-container"
-                hx-swap="innerHTML">
-                Load Products
-            </sl-button>
+            <div hx-get="/products"
+                 hx-target="#products-container"
+                 hx-swap="innerHTML">
+                <wa-button variant="primary" size="medium">
+                    Load Products
+                </wa-button>
+            </div>
         </div>
         
         <div id="products-container">
@@ -232,9 +229,7 @@
         </div>
     </div>
     
-    <!-- Shoelace JS -->
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
-    
+
     <!-- Custom JS -->
     <script>
         function openEditModal() {
