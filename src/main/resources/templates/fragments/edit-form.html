@@ -17,38 +17,38 @@
               hx-vals='{"sortBy": "id", "sortOrder": "asc"}'>
               
             <div class="form-group">
-                <label for="productId">Product ID</label>
-                <input 
+                <wa-input 
                     type="text" 
                     id="productId" 
-                    class="form-control" 
                     th:value="${product.id}" 
-                    disabled>
+                    disabled
+                    label="Product ID">
+                </wa-input>
             </div>
             
             <div class="form-group">
-                <label for="title">Product Title *</label>
-                <input 
+                <wa-input 
                     type="text" 
                     id="title" 
                     name="title" 
-                    class="form-control" 
                     th:value="${product.title}" 
-                    required>
+                    required
+                    label="Product Title">
+                </wa-input>
             </div>
             
             <div class="form-group">
-                <label for="productType">Product Type</label>
-                <input 
+                <wa-input 
                     type="text" 
                     id="productType" 
                     name="productType" 
-                    class="form-control" 
-                    th:value="${product.productType}">
+                    th:value="${product.productType}"
+                    label="Product Type">
+                </wa-input>
             </div>
             
-            <div>
-                <wa-button type="submit" variant="success">
+            <div class="wa-mt-m">
+                <wa-button type="submit" variant="success" class="wa-mr-s">
                     Update Product
                 </wa-button>
                 <wa-button variant="neutral" onclick="closeEditModal()">

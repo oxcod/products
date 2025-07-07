@@ -3,8 +3,8 @@
 <body>
     <div th:fragment="product-table" id="product-table-fragment">
         <!-- Search box -->
-        <div style="margin-bottom: 1.5rem;">
-            <input 
+        <div class="search-box">
+            <wa-input 
                 type="text" 
                 class="search-input" 
                 placeholder="Search products by title..."
@@ -14,12 +14,12 @@
                 hx-trigger="keyup changed delay:300ms"
                 hx-target="#product-table-fragment"
                 hx-swap="outerHTML"
-                style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem; border: 2px solid #ddd; border-radius: 8px;"
-            >
+                size="large"
+            ></wa-input>
         </div>
         
         <!-- Search results info -->
-        <div th:if="${query != null and !query.isEmpty()}" style="margin-bottom: 1rem; color: #666;">
+        <div th:if="${query != null and !query.isEmpty()}" class="wa-mb-m wa-text-color-subdued">
             <p th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}"></p>
         </div>
         
@@ -31,7 +31,7 @@
                            th:attr="hx-get=@{/products(page=0,query=${query},sortBy='id',sortOrder=${sortBy == 'id' and sortOrder == 'asc' ? 'desc' : 'asc'})}"
                            hx-target="#product-table-fragment"
                            hx-swap="outerHTML"
-                           style="color: #495057; text-decoration: none;">
+                           class="wa-text-decoration-none">
                             ID
                             <span th:if="${sortBy == 'id' and sortOrder == 'asc'}">▲</span>
                             <span th:if="${sortBy == 'id' and sortOrder == 'desc'}">▼</span>
@@ -42,7 +42,7 @@
                            th:attr="hx-get=@{/products(page=0,query=${query},sortBy='title',sortOrder=${sortBy == 'title' and sortOrder == 'asc' ? 'desc' : 'asc'})}"
                            hx-target="#product-table-fragment"
                            hx-swap="outerHTML"
-                           style="color: #495057; text-decoration: none;">
+                           class="wa-text-decoration-none">
                             Title
                             <span th:if="${sortBy == 'title' and sortOrder == 'asc'}">▲</span>
                             <span th:if="${sortBy == 'title' and sortOrder == 'desc'}">▼</span>
@@ -83,7 +83,7 @@
                            th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
                            hx-target="#modal-content"
                            hx-swap="innerHTML"
-                           style="color: #007bff; text-decoration: none; margin-right: 1rem;">
+                           class="edit-link">
                             Edit
                         </a>
                         <a href="#" 
@@ -102,8 +102,8 @@
         </table>
         
         <!-- Pagination controls -->
-        <div th:if="${totalPages > 1 and (query == null or query.isEmpty())}" style="margin-top: 1.5rem; text-align: center;">
-            <div style="display: inline-flex; gap: 0.5rem; align-items: center;">
+        <div th:if="${totalPages > 1 and (query == null or query.isEmpty())}" class="pagination-container">
+            <div class="wa-display-inline-flex wa-gap-s wa-align-items-center">
                 <wa-button
                     th:if="${currentPage > 0}"
                     variant="default" 
@@ -115,7 +115,7 @@
                 </wa-button>
                 
                 <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
-                      style="display: inline-block;">
+                      class="wa-display-inline-block">
                     <wa-button
                         th:if="${pageNum == currentPage}"
                         variant="primary" 
@@ -146,7 +146,7 @@
             </div>
         </div>
         
-        <div th:if="${products == null or products.isEmpty()}" style="padding: 2rem; text-align: center; color: #666;">
+        <div th:if="${products == null or products.isEmpty()}" class="no-results">
             <p th:if="${query != null and !query.isEmpty()}">
                 No products found for: <strong th:text="${query}"></strong>
             </p>
@@ -157,33 +157,33 @@
         
         <!-- Add Product Form -->
         <div class="add-product-form">
-            <h3>Add New Product</h3>
+            <h3 class="wa-mb-m">Add New Product</h3>
             <form id="add-product-form"
                   hx-post="/products" 
                   hx-target="#products-container" 
                   hx-swap="innerHTML">
                 <div class="form-group">
-                    <label for="title">Product Title *</label>
-                    <input 
+                    <wa-input 
                         type="text"
                         id="title" 
                         name="title" 
-                        class="form-control"
                         placeholder="Enter product title"
-                        required>
+                        required
+                        label="Product Title">
+                    </wa-input>
                 </div>
                 
                 <div class="form-group">
-                    <label for="productType">Product Type</label>
-                    <input 
+                    <wa-input 
                         type="text"
                         id="productType" 
                         name="productType" 
-                        class="form-control"
-                        placeholder="Enter product type (optional)">
+                        placeholder="Enter product type (optional)"
+                        label="Product Type">
+                    </wa-input>
                 </div>
                 
-                <wa-button type="submit" variant="success">
+                <wa-button type="submit" variant="success" class="wa-mt-s">
                     Add Product
                 </wa-button>
             </form>

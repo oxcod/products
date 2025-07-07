@@ -1,0 +1,307 @@
+/* WebAwesome Theme Application Styles */
+
+/* CSS Variables for consistency */
+:root {
+    --app-transition-speed: 0.3s;
+    --app-transition-fast: 0.2s;
+    --app-border-radius: 8px;
+    --app-border-radius-lg: 12px;
+    --app-spacing-xs: 0.25rem;
+    --app-spacing-s: 0.5rem;
+    --app-spacing-m: 1rem;
+    --app-spacing-l: 1.5rem;
+    --app-spacing-xl: 2rem;
+    --app-spacing-xxl: 2.5rem;
+}
+
+/* Base Layout */
+body {
+    background-color: var(--wa-color-surface-raised);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--wa-color-neutral-fill-quiet);
+    padding: var(--app-spacing-xxl);
+    border-radius: var(--app-border-radius-lg);
+    box-shadow: var(--wa-shadow-md);
+}
+
+/* Typography */
+h1, h2, h3 {
+    color: var(--wa-color-neutral-text-loud);
+}
+
+/* Product Table */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--app-spacing-l);
+    background-color: var(--wa-color-surface-raised);
+    border: 1px solid var(--wa-color-neutral-stroke-quiet);
+    border-radius: var(--app-border-radius);
+    overflow: hidden;
+}
+
+.product-table th,
+.product-table td {
+    padding: var(--app-spacing-m);
+    text-align: left;
+    border-bottom: 1px solid var(--wa-color-neutral-stroke-quiet);
+}
+
+.product-table th {
+    background-color: var(--wa-color-neutral-fill-normal);
+    font-weight: 600;
+    color: var(--wa-color-neutral-text-normal);
+    border-bottom: 2px solid var(--wa-color-neutral-stroke-normal);
+}
+
+.product-table th a {
+    color: var(--wa-color-neutral-text-normal);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--app-spacing-xs);
+}
+
+.product-table th a:hover {
+    color: var(--wa-color-brand-fill-loud);
+}
+
+.product-table tr:hover {
+    background-color: var(--wa-color-neutral-fill-quiet);
+}
+
+/* Ensure links remain visible on row hover */
+.product-table tr:hover .edit-link {
+    color: var(--wa-color-brand-fill-loud);
+    font-weight: 600;
+}
+
+.product-table tr:hover .delete-btn {
+    color: var(--wa-color-danger-fill-loud);
+    font-weight: 600;
+}
+
+.variant-list {
+    font-size: 0.875rem;
+    color: var(--wa-color-neutral-text-quiet);
+    line-height: 1.5;
+}
+
+/* Forms */
+.add-product-form {
+    background-color: var(--wa-color-surface-raised);
+    padding: var(--app-spacing-xl);
+    border-radius: var(--app-border-radius);
+    margin-top: var(--app-spacing-xxl);
+    border: 2px solid var(--wa-color-neutral-stroke-normal);
+    box-shadow: var(--wa-shadow-md);
+}
+
+
+.add-product-form h3 {
+    color: var(--wa-color-neutral-text-loud);
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: calc(var(--app-spacing-m) + var(--app-spacing-xs));
+}
+
+/* Search */
+.search-box {
+    margin-bottom: var(--app-spacing-xl);
+}
+
+.search-input {
+    width: 100%;
+    padding: calc(var(--app-spacing-s) + var(--app-spacing-xs)) var(--app-spacing-m);
+    font-size: 1.1rem;
+    border: 2px solid var(--wa-color-neutral-stroke-quiet);
+    border-radius: var(--app-border-radius);
+    background-color: var(--wa-color-surface-raised);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--wa-color-brand-fill-loud);
+}
+
+/* Links */
+.edit-link {
+    color: var(--wa-color-brand-fill-loud);
+    text-decoration: none;
+    margin-right: var(--app-spacing-m);
+    font-weight: 500;
+}
+
+.edit-link:hover {
+    color: var(--wa-color-brand-fill-loud);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: var(--app-spacing-m);
+    color: var(--wa-color-brand-fill-loud);
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Delete Button */
+.delete-btn {
+    color: var(--wa-color-danger-fill-loud);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.delete-btn:hover {
+    color: var(--wa-color-danger-fill-loud);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.delete-confirm {
+    color: var(--wa-color-danger-fill-loud);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.delete-confirm .checkmark {
+    color: var(--wa-color-success-fill-loud);
+    margin-right: calc(var(--app-spacing-xs) + 0.05rem);
+}
+
+/* Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-overlay.show {
+    display: block;
+}
+
+.modal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--wa-color-surface-raised) !important;
+    background: var(--wa-color-surface-raised) !important;
+    padding: 0;
+    border-radius: var(--app-border-radius);
+    border: 2px solid var(--wa-color-neutral-stroke-normal);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 1001;
+}
+
+.modal-container > * {
+    background-color: var(--wa-color-surface-raised) !important;
+}
+
+.edit-modal-content {
+    padding: var(--app-spacing-l);
+    background-color: var(--wa-color-surface-raised) !important;
+    background: var(--wa-color-surface-raised) !important;
+    border-radius: var(--app-border-radius);
+}
+
+/* Ensure form elements have white background */
+.edit-modal-content form {
+    background-color: var(--wa-color-surface-raised) !important;
+    background: var(--wa-color-surface-raised) !important;
+}
+
+.edit-modal-content .form-group {
+    background-color: transparent;
+}
+
+/* Ensure WebAwesome inputs have proper background in modal */
+.edit-modal-content wa-input {
+    --wa-input-background-color: var(--wa-color-surface-raised);
+    --wa-input-background-color-hover: var(--wa-color-surface-raised);
+    --wa-input-background-color-focus: var(--wa-color-surface-raised);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--app-spacing-l);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--wa-color-neutral-text-loud);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--wa-color-neutral-text-quiet);
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    color: var(--wa-color-neutral-text-loud);
+}
+
+/* Pagination */
+.pagination-container {
+    margin-top: var(--app-spacing-xl);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* No Results */
+.no-results {
+    padding: calc(var(--app-spacing-xl) + var(--app-spacing-m)) var(--app-spacing-xl);
+    text-align: center;
+    color: var(--wa-color-neutral-text-quiet);
+    background-color: var(--wa-color-surface-raised);
+    border: 1px solid var(--wa-color-neutral-stroke-quiet);
+    border-radius: var(--app-border-radius);
+}
+
+/* Utilities */
+.wa-mb-xl {
+    margin-bottom: var(--app-spacing-xl);
+}
+
+/* Page-specific styles */
+.header {
+    margin-bottom: var(--app-spacing-xl);
+}
+
+.search-container {
+    margin-bottom: var(--app-spacing-xl);
+}
+

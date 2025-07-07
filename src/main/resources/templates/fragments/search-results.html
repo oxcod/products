@@ -3,7 +3,7 @@
 <body>
     <div th:fragment="search-results" id="search-results">
         <div th:if="${products != null and !products.isEmpty()}">
-            <p th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}" style="color: #666; margin-bottom: 1rem;"></p>
+            <p th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}" class="wa-text-color-subdued wa-mb-m"></p>
             <table class="product-table">
                 <thead>
                     <tr>
@@ -44,7 +44,7 @@
                                th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
                                hx-target="#modal-content"
                                hx-swap="innerHTML"
-                               style="color: #007bff; text-decoration: none; margin-right: 1rem;">
+                               class="edit-link">
                                 Edit
                             </a>
                             <a href="#" 
