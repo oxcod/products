@@ -1,215 +1,263 @@
-# 工作日志
+# Work Log
 
-## 项目概述
-这是一个使用 Spring Boot 和 Kotlin 构建的全栈产品管理应用程序，采用服务端渲染技术栈。
+## Project Overview
+This is a full-stack product management application built with Spring Boot and Kotlin, utilizing server-side rendering technology stack.
 
-## 技术栈版本
+## Technology Stack Versions
 
-### 核心框架
-- **JVM**: 24 (通过 jvmToolchain 配置)
+### Core Frameworks
+- **JVM**: 24
 - **Kotlin**: 2.2.0
 - **Spring Boot**: 3.5.3
 - **Spring Dependency Management**: 1.1.7
 - **Gradle**: Kotlin DSL
 
-### 数据库相关
-- **PostgreSQL**: 最新版本 (通过 runtimeOnly 依赖)
-- **Flyway Core**: Spring Boot 3.5.3 管理的版本
-- **Flyway PostgreSQL**: Spring Boot 3.5.3 管理的版本
-- **Spring JDBC**: 通过 spring-boot-starter-jdbc
+### Database
+- **PostgreSQL**: Latest version (via runtimeOnly dependency)
+- **Flyway Core**: Version managed by Spring Boot 3.5.3
+- **Flyway PostgreSQL**: Version managed by Spring Boot 3.5.3
+- **Spring JDBC**: Via spring-boot-starter-jdbc
 
-### 前端技术
-- **Thymeleaf**: Spring Boot 3.5.3 管理的版本
+### Frontend Technologies
+- **Thymeleaf**: Version managed by Spring Boot 3.5.3
 - **HTMX**: 1.9.11
 - **HTMX Spring Boot Thymeleaf**: 4.0.1
 - **Shoelace Web Components**: 2.15.0
 
-### 开发工具
-- **Spring Boot DevTools**: 开发环境自动重载
-- **Jackson Kotlin Module**: JSON 序列化支持
-- **Kotlin Reflect**: 反射支持
-- **JUnit 5**: 测试框架
+### Development Tools
+- **Spring Boot DevTools**: Auto-reload for development
+- **Jackson Kotlin Module**: JSON serialization support
+- **Kotlin Reflect**: Reflection support
+- **JUnit 5**: Testing framework
 
-## 功能实现历程
+## Implementation Timeline
 
-### v0.1 - 初始实现 (提交: 10c486c)
-1. **基础项目搭建**
-   - Spring Boot 应用程序初始化
-   - PostgreSQL 数据库配置
-   - Flyway 数据库迁移设置
-   - 基础数据模型（Product 和 Variant）
+### v0.1 - Initial Implementation (Commit: 10c486c)
+1. **Basic Project Setup**
+   - Spring Boot application initialization
+   - PostgreSQL database configuration
+   - Flyway database migration setup
+   - Basic data models (Product and Variant)
 
-2. **核心功能**
-   - 产品列表展示
-   - 使用 HTMX 加载产品数据
-   - 添加新产品功能（无页面刷新）
-   - 定时任务从 famme.no 同步产品数据（限制50个产品）
+2. **Core Features**
+   - Product list display
+   - Load products using HTMX
+   - Add new product functionality (no page refresh)
+   - Scheduled job to sync product data from famme.no (limited to 50 products)
 
-### v0.2 - 修复表单提交 (提交: b9b4965)
-- 将 Shoelace 的 sl-input 组件替换为标准 HTML input
-- 添加表单控件的 CSS 样式
-- 修复 MissingServletRequestParameterException 错误
-- 确保 HTMX 表单数据正确提交
+### v0.2 - Form Submission Fix (Commit: b9b4965)
+- Replace Shoelace sl-input components with standard HTML inputs
+- Add CSS styling for form controls
+- Fix MissingServletRequestParameterException error
+- Ensure proper HTMX form data submission
 
-### 时间戳支持 (提交: 224de37)
-1. **数据库更新**
-   - 添加 created_at 和 updated_at 字段
-   - 创建 PostgreSQL 触发器自动更新时间戳
+### Timestamp Support (Commit: 224de37)
+1. **Database Updates**
+   - Add created_at and updated_at fields
+   - Create PostgreSQL triggers for automatic timestamp updates
    
-2. **显示优化**
-   - 在产品表格中显示时间戳
-   - 使用 yyyy-MM-dd HH:mm:ss 格式（精确到秒）
-   - 更新仓库类以获取时间戳字段
+2. **Display Optimization**
+   - Display timestamps in product table
+   - Use yyyy-MM-dd HH:mm:ss format (accurate to seconds)
+   - Update repository classes to fetch timestamp fields
 
-### 版本升级 (提交: 190ad2d)
+### Version Upgrade (Commit: 190ad2d)
 - Kotlin: 2.1.0 → 2.2.0
 - Spring Boot: 3.4.1 → 3.5.3
-- 保持 Spring Dependency Management 在 1.1.7（已是最新）
+- Keep Spring Dependency Management at 1.1.7 (already latest)
 
-### 高级功能实现 (提交: a23d8d2)
+### Advanced Features Implementation (Commit: a23d8d2)
 
-1. **集成搜索功能**
-   - 直接在产品表格页面添加搜索框
-   - 实时搜索，300ms 防抖
-   - 搜索结果显示数量统计
-   - 使用 LOWER() 函数实现大小写不敏感搜索
+1. **Integrated Search Functionality**
+   - Search box directly on product table page
+   - Real-time search with 300ms debounce
+   - Search result count display
+   - Case-insensitive search using LOWER() function
 
-2. **产品编辑功能**
-   - 每个产品添加编辑链接
-   - 独立的编辑页面（后续改进为模态窗口）
-   - 表单验证
-   - 编辑后重定向回主页面
+2. **Product Edit Feature**
+   - Edit link for each product
+   - Standalone edit page (later improved to modal)
+   - Form validation
+   - Redirect to main page after edit
 
-3. **产品删除功能**
-   - 带确认对话框的删除按钮
-   - 级联删除（先删除变体，再删除产品）
-   - 保持当前视图状态
-   - 删除后自动刷新表格
+3. **Product Delete Feature**
+   - Delete button with confirmation dialog
+   - Cascade deletion (delete variants first, then product)
+   - Maintain current view state
+   - Auto-refresh table after deletion
 
-4. **排序功能**
-   - ID 和 Title 列支持排序
-   - 点击列标题切换升序/降序
-   - 排序指示器（▲/▼）
-   - 排序状态在分页中保持
-   - SQL 注入防护（白名单验证）
+4. **Sorting Functionality**
+   - Sortable ID and Title columns
+   - Click column headers to toggle ASC/DESC
+   - Sort indicators (▲/▼)
+   - Sort state persists through pagination
+   - SQL injection protection (whitelist validation)
 
-5. **分页优化**
-   - 每页显示 4 条记录（从 8 条调整）
-   - 分页控件保留排序参数
-   - 搜索时不分页（显示所有结果）
-   - 页码显示和导航
+5. **Pagination Optimization**
+   - Display 4 records per page (adjusted from 8)
+   - Pagination controls preserve sort parameters
+   - No pagination during search (show all results)
+   - Page number display and navigation
 
-6. **性能优化**
-   - 添加数据库索引（id, title, LOWER(title)）
-   - 参数化查询防止 SQL 注入
-   - 高效的排序查询构建
-   - 使用 LIMIT 和 OFFSET 进行分页
+6. **Performance Optimization**
+   - Add database indexes (id, title, LOWER(title))
+   - Parameterized queries to prevent SQL injection
+   - Efficient sort query construction
+   - Use LIMIT and OFFSET for pagination
 
-### UX 改进 (提交: d1d694f)
+### UX Improvements (Commit: d1d694f)
 
-1. **悬浮编辑窗口**
-   - 编辑功能改为模态窗口
-   - 窗口大小适中（最大宽度 500px），不完全遮挡背景
-   - 点击外部或 X 按钮关闭
-   - 提交后自动关闭并更新表格
-   - 保持当前排序状态
+1. **Floating Edit Window**
+   - Edit functionality changed to modal window
+   - Appropriate window size (max-width 500px), doesn't block entire background
+   - Click outside or X button to close
+   - Auto-close and update table after submission
+   - Maintain current sort state
 
-2. **两次点击删除确认**
-   - 第一次点击：按钮变为 "✓ Sure?"（带样式间距）
-   - 第二次点击：执行删除
-   - 3秒后自动重置为 "Delete"
-   - 更流畅的用户体验，无中断弹窗
+2. **Two-Click Delete Confirmation**
+   - First click: Button changes to "✓ Sure?" (with styled spacing)
+   - Second click: Execute deletion
+   - Auto-reset to "Delete" after 3 seconds
+   - Smoother UX without interrupting popups
 
-3. **代码清理**
-   - 删除不再需要的独立编辑页面
-   - 统一所有视图的编辑和删除行为
+3. **Code Cleanup**
+   - Remove standalone edit page no longer needed
+   - Unify edit and delete behavior across all views
 
-## 项目结构
+## Project Structure
 
 ```
 products/
-├── build.gradle.kts                    # Gradle 构建配置
-├── WORK_LOG.md                        # 工作日志（中文）
-├── WORK_LOG_EN.md                     # 工作日志（英文）
+├── build.gradle.kts                    # Gradle build configuration
+├── WORK_LOG.md                        # Work log (Chinese)
+├── WORK_LOG_EN.md                     # Work log (English)
 ├── src/main/
 │   ├── java/com/oxcod/products/
-│   │   ├── ProductsApplication.kt     # 主应用入口
+│   │   ├── ProductsApplication.kt     # Main application entry
 │   │   ├── controller/               
-│   │   │   └── ProductController.kt   # MVC 控制器
+│   │   │   └── ProductController.kt   # MVC controller
 │   │   ├── model/                    
-│   │   │   ├── Product.kt            # 产品实体
-│   │   │   └── Variant.kt            # 变体实体
+│   │   │   ├── Product.kt            # Product entity
+│   │   │   └── Variant.kt            # Variant entity
 │   │   ├── repository/               
-│   │   │   ├── ProductRepository.kt  # 产品仓库
-│   │   │   └── VariantRepository.kt  # 变体仓库
+│   │   │   ├── ProductRepository.kt  # Product repository
+│   │   │   └── VariantRepository.kt  # Variant repository
 │   │   └── job/                      
-│   │       └── ProductSyncJob.kt     # 定时同步任务
+│   │       └── ProductSyncJob.kt     # Scheduled sync job
 │   └── resources/
-│       ├── application.yml            # 应用配置
-│       ├── db/migration/             # Flyway 迁移脚本
-│       │   ├── V1__init_schema.sql   # 初始表结构
-│       │   ├── V2__add_timestamps.sql # 时间戳字段
-│       │   └── V3__add_sorting_indexes.sql # 性能索引
-│       └── templates/                 # Thymeleaf 模板
-│           ├── index.html            # 主页面
-│           ├── search.html           # 搜索页面（已废弃）
-│           └── fragments/            # 可重用片段
-│               ├── product-table.html # 产品表格
-│               ├── search-results.html # 搜索结果
-│               └── edit-form.html    # 编辑表单
+│       ├── application.yml            # Application configuration
+│       ├── db/migration/             # Flyway migration scripts
+│       │   ├── V1__init_schema.sql   # Initial table structure
+│       │   ├── V2__add_timestamps.sql # Timestamp fields
+│       │   └── V3__add_sorting_indexes.sql # Performance indexes
+│       └── templates/                 # Thymeleaf templates
+│           ├── index.html            # Main page
+│           ├── search.html           # Search page (deprecated)
+│           └── fragments/            # Reusable fragments
+│               ├── product-table.html # Product table
+│               ├── search-results.html # Search results
+│               └── edit-form.html    # Edit form
 ```
 
-## 关键技术特点
+## Key Technical Features
 
-1. **服务端渲染 (SSR)**
-   - 使用 Thymeleaf 模板引擎
-   - HTMX 实现无刷新交互
-   - 良好的 SEO 和首屏加载性能
-   - 片段渲染优化用户体验
+1. **Server-Side Rendering (SSR)**
+   - Using Thymeleaf template engine
+   - HTMX for no-refresh interactions
+   - Good SEO and first-load performance
+   - Fragment rendering for optimized UX
 
-2. **数据库设计**
-   - 一对多关系（Product → Variants）
-   - 自动时间戳管理（PostgreSQL 触发器）
-   - 性能优化索引
-   - 外键约束保证数据完整性
+2. **Database Design**
+   - One-to-many relationship (Product → Variants)
+   - Automatic timestamp management (PostgreSQL triggers)
+   - Performance optimization indexes
+   - Foreign key constraints ensure data integrity
 
-3. **现代化开发体验**
-   - Kotlin 语言特性（数据类、空安全）
-   - Spring Boot DevTools 热重载
-   - 类型安全的仓库模式
-   - JdbcClient 简化数据访问
+3. **Modern Development Experience**
+   - Kotlin language features (data classes, null safety)
+   - Spring Boot DevTools hot reload
+   - Type-safe repository pattern
+   - JdbcClient simplifies data access
 
-4. **UI/UX 设计**
-   - 响应式设计
-   - 实时搜索和排序
-   - 流畅的编辑和删除体验
-   - Web Components (Shoelace) 集成
-   - 模态窗口减少页面跳转
+4. **UI/UX Design**
+   - Responsive design
+   - Real-time search and sorting
+   - Smooth edit and delete experience
+   - Web Components (Shoelace) integration
+   - Modal windows reduce page navigation
 
-5. **安全性考虑**
-   - SQL 参数化查询
-   - 排序列白名单验证
-   - CSRF 保护（Spring Security 默认）
-   - XSS 防护（Thymeleaf 自动转义）
+5. **Security Considerations**
+   - SQL parameterized queries
+   - Sort column whitelist validation
+   - CSRF protection (Spring Security default)
+   - XSS protection (Thymeleaf auto-escaping)
 
-## 待优化项
+## Future Improvements
 
-1. **性能优化**
-   - 考虑添加缓存层
-   - 批量操作优化
-   - 懒加载变体数据
+1. **Performance Optimization**
+   - Consider adding cache layer
+   - Batch operation optimization
+   - Lazy load variant data
 
-2. **功能增强**
-   - 批量删除功能
-   - 导出功能（CSV/Excel）
-   - 高级搜索（多字段）
-   - 变体管理界面
+2. **Feature Enhancements**
+   - Bulk delete functionality
+   - Export functionality (CSV/Excel)
+   - Advanced search (multi-field)
+   - Variant management interface
 
-3. **运维相关**
-   - 日志记录完善
-   - 监控指标集成
-   - 健康检查端点
-   - Docker 容器化
+3. **Operations**
+   - Complete logging implementation
+   - Monitoring metrics integration
+   - Health check endpoints
+   - Docker containerization
 
-## 总结
-项目成功实现了一个功能完整的产品管理系统，展示了 Spring Boot + Kotlin + HTMX 技术栈的强大能力。通过服务端渲染和现代化的前端交互，提供了优秀的用户体验和开发体验。整个项目遵循了 Spring Boot 的最佳实践，代码结构清晰，易于维护和扩展。
+## Summary
+The project successfully implements a fully-featured product management system, demonstrating the power of the Spring Boot + Kotlin + HTMX technology stack. Through server-side rendering and modern frontend interactions, it provides excellent user experience and developer experience. The entire project follows Spring Boot best practices with clear code structure that is easy to maintain and extend.
+
+## Project Handoff Documentation
+
+### Critical Implementation Details
+
+#### 1. Batch Operations Fix
+The project initially attempted to use JdbcClient.batchUpdate() which doesn't exist. We resolved this by using JdbcTemplate for batch inserts:
+```kotlin
+// In ProductRepository and VariantRepository
+jdbcTemplate.batchUpdate(sql, items, items.size) { ps, item ->
+    // parameter binding
+}
+```
+
+#### 2. Data Sync Protection
+**CRITICAL**: The sync service was initially deleting all data with deleteAll(). This was fixed by implementing ID caching:
+```kotlin
+// ProductSyncService uses caching mechanism
+private val syncedProductIds = ConcurrentHashMap.newKeySet<Long>()
+
+// Load existing IDs on startup
+init { loadExistingIds() }
+
+// Only sync new products
+if (!syncedProductIds.contains(productId)) {
+    // Process new product
+}
+```
+
+#### 3. Package Refactoring
+The package was changed from `xyz.pkq` to `com.oxcod`. All references have been updated accordingly.
+
+### Deployment Information
+- **GitHub Repository**: https://github.com/oxcod/products (private repo)
+- **Latest Version**: v1.0
+- **Port**: 9001
+- **Database**: PostgreSQL on localhost:5432/products
+
+### Version History Summary
+- v0.1: Initial implementation
+- v0.2: Form fixes (Shoelace to HTML inputs) and timestamp display
+- PostgreSQL syntax fixes (ON UPDATE CURRENT_TIMESTAMP → triggers)
+- Kotlin 2.1.0 → 2.2.0, Spring Boot 3.4.1 → 3.5.3
+- Search, edit, delete, pagination features implementation
+- UX improvements: modal editing, inline delete confirmation
+- Batch operation optimization (JdbcTemplate)
+- Critical sync fix to prevent data loss
+- v1.0: Final release and GitHub push
