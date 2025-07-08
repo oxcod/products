@@ -1,61 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" class="wa-theme-shoelace">
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="edit-form" class="edit-modal-content">
-        <div class="modal-header">
-            <h3>Edit Product</h3>
-            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+    <div th:fragment="edit-form" style="position: relative;">
+        <div class="wa-p-xl">
+            <button onclick="closeEditModal()" 
+                    style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--wa-color-neutral-text-quiet); padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; z-index: 10;"
+                    onmouseover="this.style.color='var(--wa-color-neutral-text-loud)'" 
+                    onmouseout="this.style.color='var(--wa-color-neutral-text-quiet)'">
+                ×
+            </button>
+            
+            <h3 class="wa-mb-l">Edit Product</h3>
+            
+            <form th:action="@{/products/{id}(id=${product.id})}" 
+                  th:method="post"
+                  hx-put="@{/products/{id}(id=${product.id})}"
+                  hx-target="#product-table-fragment"
+                  hx-swap="outerHTML"
+                  hx-on::after-request="closeEditModal()">
+                
+                <div class="wa-mb-xl">
+                    <wa-input 
+                        type="number"
+                        name="id" 
+                        th:value="${product.id}" 
+                        readonly
+                        disabled
+                        label="Product ID"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-mb-xl">
+                    <wa-input 
+                        type="text"
+                        name="title" 
+                        th:value="${product.title}" 
+                        required
+                        label="Product Title"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-mb-xl">
+                    <wa-input 
+                        type="text"
+                        name="productType" 
+                        th:value="${product.productType}"
+                        label="Product Type"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-flex wa-gap-s">
+                    <wa-button type="submit" variant="primary">
+                        Update Product
+                    </wa-button>
+                    <wa-button type="button" variant="default" onclick="closeEditModal()">
+                        Cancel
+                    </wa-button>
+                </div>
+            </form>
         </div>
-        
-        <form th:action="@{/products/{id}/update(id=${product.id})}" 
-              method="post"
-              hx-post="/products/{id}/update"
-              th:hx-post="@{/products/{id}/update(id=${product.id})}"
-              hx-target="#product-table-fragment"
-              hx-swap="outerHTML"
-              hx-on::after-request="closeEditModal()"
-              hx-vals='{"sortBy": "id", "sortOrder": "asc"}'>
-              
-            <div class="form-group">
-                <wa-input 
-                    type="text" 
-                    id="productId" 
-                    th:value="${product.id}" 
-                    disabled
-                    label="Product ID">
-                </wa-input>
-            </div>
-            
-            <div class="form-group">
-                <wa-input 
-                    type="text" 
-                    id="title" 
-                    name="title" 
-                    th:value="${product.title}" 
-                    required
-                    label="Product Title">
-                </wa-input>
-            </div>
-            
-            <div class="form-group">
-                <wa-input 
-                    type="text" 
-                    id="productType" 
-                    name="productType" 
-                    th:value="${product.productType}"
-                    label="Product Type">
-                </wa-input>
-            </div>
-            
-            <div class="wa-mt-m">
-                <wa-button type="submit" variant="success" class="wa-mr-s">
-                    Update Product
-                </wa-button>
-                <wa-button variant="neutral" onclick="closeEditModal()">
-                    Cancel
-                </wa-button>
-            </div>
-        </form>
     </div>
 </body>
 </html>

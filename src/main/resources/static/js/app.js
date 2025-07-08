@@ -25,7 +25,10 @@ function handleDeleteClick(event, element) {
     } else {
         // First click - show confirmation
         element.classList.add('delete-confirm');
-        element.innerHTML = '<span class="checkmark">✓</span>Sure?';
+        element.innerHTML = '<span style="color: var(--wa-color-success-fill-loud); margin-right: 0.3rem;">✓</span>Sure?';
+        element.style.color = 'var(--wa-color-danger-fill-loud)';
+        element.style.textDecoration = 'none';
+        element.style.cursor = 'pointer';
         
         // Reset after 3 seconds if not clicked
         setTimeout(function() {

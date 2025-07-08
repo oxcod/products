@@ -9,15 +9,14 @@
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/webawesome.css" />
     <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/webawesome.loader.js"></script>
     <script src="https://unpkg.com/htmx.org@2.0.6/dist/htmx.min.js"></script>
-    <link rel="stylesheet" href="/css/app.css" />
 </head>
-<body>
-    <div class="container">
+<body class="wa-bg-surface-raised wa-flex wa-justify-center wa-min-height-screen wa-align-items-start wa-p-none wa-m-none">
+    <wa-card class="wa-mx-auto wa-mt-xl wa-mb-xl wa-p-xl">
         <div class="wa-mb-xl">
             <h1 class="wa-text-h2 wa-mb-m">Product Management</h1>
         </div>
         
-        <div class="wa-mb-xl">
+        <div class="wa-mb-xxl">
             <div hx-get="/products"
                  hx-target="#products-container"
                  hx-swap="innerHTML">
@@ -30,13 +29,13 @@
         <div id="products-container">
             <!-- Product table will be loaded here -->
         </div>
-    </div>
+    </wa-card>
     
     <!-- Modal container -->
-    <div id="edit-modal" class="modal-overlay" onclick="closeEditModalOnOverlay(event)">
-        <div class="modal-container" id="modal-content">
+    <div id="edit-modal" class="wa-position-fixed wa-inset-0 wa-width-full wa-height-full wa-z-50" style="display: none; background-color: var(--wa-color-overlay);" onclick="closeEditModalOnOverlay(event)">
+        <wa-card class="wa-position-absolute wa-max-width-lg wa-width-90 wa-max-height-90vh wa-overflow-y-auto wa-z-51" style="top: 50%; left: 50%; transform: translate(-50%, -50%);" id="modal-content">
             <!-- Edit form will be loaded here -->
-        </div>
+        </wa-card>
     </div>
     
     <script src="/js/app.js"></script>
