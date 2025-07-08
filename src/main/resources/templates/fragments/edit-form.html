@@ -5,10 +5,9 @@
         
         <form th:action="@{/products/{id}(id=${product.id})}" 
               th:method="post"
-              hx-put="@{/products/{id}(id=${product.id})}"
+              th:attr="hx-put=@{/products/{id}(id=${product.id})}"
               hx-target="#product-table-fragment"
               hx-swap="outerHTML"
-              hx-on::after-request="document.getElementById('edit-dialog').open = false"
               class="wa-space-y-6">
             
             <!-- Product ID (Read-only) -->
@@ -47,11 +46,11 @@
             <wa-divider></wa-divider>
             <!-- Form Actions -->
             <div slot="footer" class="wa-flex wa-gap-3 wa-pt-6 wa-mt-6">
-                <wa-button type="submit" variant="primary" class="wa-flex-1">
+                <wa-button type="submit" variant="success" class="wa-flex-1">
                     <wa-icon name="check" slot="prefix"></wa-icon>
                     Update Product
                 </wa-button>
-                <wa-button type="button" variant="default" data-dialog="close">
+                <wa-button type="button" variant="default" onclick="document.getElementById('edit-dialog').open = false">
                     <wa-icon name="x" slot="prefix"></wa-icon>
                     Cancel
                 </wa-button>

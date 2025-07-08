@@ -38,5 +38,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.id === 'dialog-content') {
             document.getElementById('edit-dialog').open = true;
         }
+        // Close edit dialog after successful form submission
+        if (event.target.id === 'product-table-fragment') {
+            const editDialog = document.getElementById('edit-dialog');
+            if (editDialog && editDialog.open) {
+                editDialog.open = false;
+            }
+        }
     });
 });
