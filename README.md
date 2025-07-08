@@ -1,9 +1,8 @@
-# Work Log
+# Product Management System
 
-## Project Overview
-This is a full-stack product management application built with Spring Boot and Kotlin, utilizing server-side rendering technology stack.
+A full-stack product management application built with Spring Boot and Kotlin, featuring modern server-side rendering with WebAwesome UI components.
 
-## Technology Stack Versions
+## 🚀 Technology Stack
 
 ### Core Frameworks
 - **JVM**: 24
@@ -20,9 +19,9 @@ This is a full-stack product management application built with Spring Boot and K
 
 ### Frontend Technologies
 - **Thymeleaf**: Version managed by Spring Boot 3.5.3
-- **HTMX**: 1.9.11
+- **HTMX**: 2.0.6
 - **HTMX Spring Boot Thymeleaf**: 4.0.1
-- **Shoelace Web Components**: 2.15.0
+- **WebAwesome**: 3.0.0-beta.1 (evolution of Shoelace)
 
 ### Development Tools
 - **Spring Boot DevTools**: Auto-reload for development
@@ -30,186 +29,327 @@ This is a full-stack product management application built with Spring Boot and K
 - **Kotlin Reflect**: Reflection support
 - **JUnit 5**: Testing framework
 
-## Implementation Timeline
+## 📋 Features
 
-### v0.1 - Initial Implementation (Commit: 10c486c)
-1. **Basic Project Setup**
-   - Spring Boot application initialization
-   - PostgreSQL database configuration
-   - Flyway database migration setup
-   - Basic data models (Product and Variant)
+### Core Functionality
+- ✅ **Product Management**: Add, edit, delete products with HTMX no-refresh interactions
+- ✅ **Real-time Search**: Live search with 300ms debounce and result count display
+- ✅ **Advanced Sorting**: Sortable columns (ID, Title) with ASC/DESC indicators
+- ✅ **Smart Pagination**: 4 records per page with sort state preservation
+- ✅ **Variant Support**: Display product variants with availability status
+- ✅ **Data Sync**: Scheduled job to sync products from external API
 
-2. **Core Features**
-   - Product list display
-   - Load products using HTMX
-   - Add new product functionality (no page refresh)
-   - Scheduled job to sync product data from famme.no (limited to 50 products)
+### Modern UI/UX
+- ✅ **WebAwesome Components**: Complete UI built with WebAwesome 3.0 design system
+- ✅ **Modal Dialogs**: WebAwesome Dialog components for edit and delete confirmation
+- ✅ **Responsive Design**: Mobile-friendly layout with proper spacing and alignment
+- ✅ **Visual Feedback**: Success/danger button variants and loading states
+- ✅ **Accessibility**: Proper ARIA labels and keyboard navigation
 
-### v0.2 - Form Submission Fix (Commit: b9b4965)
-- Replace Shoelace sl-input components with standard HTML inputs
-- Add CSS styling for form controls
-- Fix MissingServletRequestParameterException error
-- Ensure proper HTMX form data submission
+### Technical Excellence
+- ✅ **Server-Side Rendering**: Thymeleaf templates with SEO optimization
+- ✅ **Security**: Parameterized queries, CSRF protection, XSS prevention
+- ✅ **Performance**: Database indexes, efficient pagination, batch operations
+- ✅ **Data Integrity**: Foreign key constraints, cascade operations
+- ✅ **Type Safety**: Kotlin null safety, data classes, type-safe repositories
 
-### Timestamp Support (Commit: 224de37)
-1. **Database Updates**
-   - Add created_at and updated_at fields
-   - Create PostgreSQL triggers for automatic timestamp updates
-   
-2. **Display Optimization**
-   - Display timestamps in product table
-   - Use yyyy-MM-dd HH:mm:ss format (accurate to seconds)
-   - Update repository classes to fetch timestamp fields
-
-### Version Upgrade (Commit: 190ad2d)
-- Kotlin: 2.1.0 → 2.2.0
-- Spring Boot: 3.4.1 → 3.5.3
-- Keep Spring Dependency Management at 1.1.7 (already latest)
-
-### Advanced Features Implementation (Commit: a23d8d2)
-
-1. **Integrated Search Functionality**
-   - Search box directly on product table page
-   - Real-time search with 300ms debounce
-   - Search result count display
-   - Case-insensitive search using LOWER() function
-
-2. **Product Edit Feature**
-   - Edit link for each product
-   - Standalone edit page (later improved to modal)
-   - Form validation
-   - Redirect to main page after edit
-
-3. **Product Delete Feature**
-   - Delete button with confirmation dialog
-   - Cascade deletion (delete variants first, then product)
-   - Maintain current view state
-   - Auto-refresh table after deletion
-
-4. **Sorting Functionality**
-   - Sortable ID and Title columns
-   - Click column headers to toggle ASC/DESC
-   - Sort indicators (▲/▼)
-   - Sort state persists through pagination
-   - SQL injection protection (whitelist validation)
-
-5. **Pagination Optimization**
-   - Display 4 records per page (adjusted from 8)
-   - Pagination controls preserve sort parameters
-   - No pagination during search (show all results)
-   - Page number display and navigation
-
-6. **Performance Optimization**
-   - Add database indexes (id, title, LOWER(title))
-   - Parameterized queries to prevent SQL injection
-   - Efficient sort query construction
-   - Use LIMIT and OFFSET for pagination
-
-### UX Improvements (Commit: d1d694f)
-
-1. **Floating Edit Window**
-   - Edit functionality changed to modal window
-   - Appropriate window size (max-width 500px), doesn't block entire background
-   - Click outside or X button to close
-   - Auto-close and update table after submission
-   - Maintain current sort state
-
-2. **Two-Click Delete Confirmation**
-   - First click: Button changes to "✓ Sure?" (with styled spacing)
-   - Second click: Execute deletion
-   - Auto-reset to "Delete" after 3 seconds
-   - Smoother UX without interrupting popups
-
-3. **Code Cleanup**
-   - Remove standalone edit page no longer needed
-   - Unify edit and delete behavior across all views
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 products/
 ├── build.gradle.kts                    # Gradle build configuration
-├── WORK_LOG.md                        # Work log (Chinese)
-├── WORK_LOG_EN.md                     # Work log (English)
+├── analyze_products.py                 # Data analysis script
 ├── src/main/
 │   ├── java/com/oxcod/products/
-│   │   ├── ProductsApplication.kt     # Main application entry
+│   │   ├── ProductsApplication.kt      # Main application entry
+│   │   ├── config/
+│   │   │   └── JdbcConfig.kt          # Database configuration
 │   │   ├── controller/               
-│   │   │   └── ProductController.kt   # MVC controller
+│   │   │   └── ProductController.kt    # MVC controller with PUT support
+│   │   ├── dto/
+│   │   │   └── FammeDto.kt            # External API data transfer objects
 │   │   ├── model/                    
-│   │   │   ├── Product.kt            # Product entity
-│   │   │   └── Variant.kt            # Variant entity
+│   │   │   ├── Product.kt             # Product entity
+│   │   │   └── Variant.kt             # Variant entity
 │   │   ├── repository/               
-│   │   │   ├── ProductRepository.kt  # Product repository
-│   │   │   └── VariantRepository.kt  # Variant repository
-│   │   └── job/                      
-│   │       └── ProductSyncJob.kt     # Scheduled sync job
+│   │   │   ├── ProductRepository.kt   # Product repository with search/sort
+│   │   │   └── VariantRepository.kt   # Variant repository
+│   │   └── service/                      
+│   │       └── ProductSyncService.kt  # External API sync service
 │   └── resources/
-│       ├── application.yml            # Application configuration
-│       ├── db/migration/             # Flyway migration scripts
-│       │   ├── V1__init_schema.sql   # Initial table structure
-│       │   ├── V2__add_timestamps.sql # Timestamp fields
+│       ├── application.yml             # Application configuration
+│       ├── db/migration/              # Flyway migration scripts
+│       │   ├── V1__init.sql          # Initial table structure
+│       │   ├── V2__add_timestamps.sql # Timestamp fields with triggers
 │       │   └── V3__add_sorting_indexes.sql # Performance indexes
+│       ├── static/
+│       │   └── js/
+│       │       └── app.js             # WebAwesome dialog handlers
 │       └── templates/                 # Thymeleaf templates
-│           ├── index.html            # Main page
-│           ├── search.html           # Search page (deprecated)
-│           └── fragments/            # Reusable fragments
-│               ├── product-table.html # Product table
-│               ├── search-results.html # Search results
-│               └── edit-form.html    # Edit form
+│           ├── index.html             # Main page with WebAwesome layout
+│           ├── search.html            # Dedicated search page
+│           ├── archived/              # Original implementation backup
+│           └── fragments/             # Reusable WebAwesome components
+│               ├── product-table.html # Product table with dialogs
+│               ├── search-results.html # Search results fragment
+│               └── edit-form.html     # Edit form with PUT support
 ```
 
-## Key Technical Features
+## 🎯 Implementation Timeline
 
-1. **Server-Side Rendering (SSR)**
-   - Using Thymeleaf template engine
-   - HTMX for no-refresh interactions
-   - Good SEO and first-load performance
-   - Fragment rendering for optimized UX
+### v1.0 - WebAwesome Frontend Rewrite (Latest)
+**Complete UI modernization with WebAwesome 3.0 components**
 
-2. **Database Design**
-   - One-to-many relationship (Product → Variants)
-   - Automatic timestamp management (PostgreSQL triggers)
-   - Performance optimization indexes
-   - Foreign key constraints ensure data integrity
+#### Frontend Transformation
+- ✅ **Component Migration**: Replace all custom CSS with WebAwesome utility classes
+- ✅ **Dialog System**: Implement WebAwesome Dialog for edit and delete confirmation
+- ✅ **Layout Fixes**: Proper spacing using wa-divider components and flexbox
+- ✅ **Visual Hierarchy**: Add Product form with distinct background styling
+- ✅ **Color Consistency**: Unified green buttons (variant="success") across forms
 
-3. **Modern Development Experience**
-   - Kotlin language features (data classes, null safety)
-   - Spring Boot DevTools hot reload
-   - Type-safe repository pattern
-   - JdbcClient simplifies data access
+#### Technical Improvements
+- ✅ **PUT Endpoint**: Add proper REST endpoint for edit form HTMX requests
+- ✅ **Event Handling**: Global HTMX event listeners for dialog management
+- ✅ **URL Resolution**: Fix Thymeleaf URL parsing in HTMX attributes using th:attr
+- ✅ **Pagination Layout**: Horizontal pagination using flexbox instead of vertical stacking
+- ✅ **Form Validation**: Prevent dialog closure during input while maintaining auto-close on success
 
-4. **UI/UX Design**
-   - Responsive design
-   - Real-time search and sorting
-   - Smooth edit and delete experience
-   - Web Components (Shoelace) integration
-   - Modal windows reduce page navigation
+#### Developer Experience
+- ✅ **Code Organization**: Archive original implementation for reference
+- ✅ **Maintainability**: Eliminate custom CSS in favor of design system
+- ✅ **Debugging**: Improved error handling and console logging
+- ✅ **Documentation**: Comprehensive commit messages and code comments
 
-5. **Security Considerations**
-   - SQL parameterized queries
-   - Sort column whitelist validation
-   - CSRF protection (Spring Security default)
-   - XSS protection (Thymeleaf auto-escaping)
+### v0.3 - Advanced Features (Previous)
+1. **Search & Sort Integration**
+   - Real-time search with debounce
+   - Sortable columns with state persistence
+   - Combined search and sort functionality
 
-## Future Improvements
+2. **Enhanced UX**
+   - Modal edit windows (replaced standalone page)
+   - Two-click delete confirmation
+   - Auto-refresh after operations
 
-1. **Performance Optimization**
-   - Consider adding cache layer
-   - Batch operation optimization
-   - Lazy load variant data
+3. **Performance Optimization**
+   - Database indexes for search/sort
+   - Efficient pagination with LIMIT/OFFSET
+   - Batch operations for data sync
 
-2. **Feature Enhancements**
-   - Bulk delete functionality
-   - Export functionality (CSV/Excel)
-   - Advanced search (multi-field)
-   - Variant management interface
+### v0.2 - Form & Display Improvements
+- Fixed Shoelace component form submission issues
+- Added timestamp display with PostgreSQL triggers
+- Version upgrades (Kotlin 2.2.0, Spring Boot 3.5.3)
 
-3. **Operations**
-   - Complete logging implementation
-   - Monitoring metrics integration
-   - Health check endpoints
-   - Docker containerization
+### v0.1 - Foundation
+- Spring Boot + Kotlin setup
+- PostgreSQL with Flyway migrations
+- Basic CRUD operations
+- External API integration (famme.no)
 
-## Summary
-The project successfully implements a fully-featured product management system, demonstrating the power of the Spring Boot + Kotlin + HTMX technology stack. Through server-side rendering and modern frontend interactions, it provides excellent user experience and developer experience. The entire project follows Spring Boot best practices with clear code structure that is easy to maintain and extend.
+## 🛠️ Development Setup
+
+### Prerequisites
+- **Java 24** or higher
+- **PostgreSQL** database
+- **Gradle** (wrapper included)
+
+### Quick Start
+1. **Clone and setup database**:
+   ```bash
+   git clone https://github.com/oxcod/products.git
+   cd products
+   createdb products
+   ```
+
+2. **Configure application**:
+   ```bash
+   cp src/main/resources/application.yml.example src/main/resources/application.yml
+   # Edit database credentials if needed
+   ```
+
+3. **Run application**:
+   ```bash
+   ./gradlew bootRun
+   ```
+
+4. **Access application**:
+   - Main interface: http://localhost:9001
+   - Search page: http://localhost:9001/search
+
+### Database Schema
+The application uses Flyway migrations to manage database schema:
+- **V1**: Initial products and variants tables with foreign keys
+- **V2**: Timestamp fields with PostgreSQL triggers for auto-update
+- **V3**: Performance indexes for search and sorting
+
+## 🔧 Key Technical Features
+
+### 1. WebAwesome Design System
+- **Components**: Cards, buttons, inputs, dialogs, alerts, badges
+- **Utility Classes**: Spacing, colors, typography, layout
+- **Icons**: Comprehensive icon set with semantic usage
+- **Theming**: Consistent design tokens and CSS variables
+
+### 2. HTMX Integration
+- **No-Refresh Updates**: All operations update content without page reload
+- **Event Handling**: Custom JavaScript for dialog lifecycle management
+- **Error Handling**: Graceful error states and user feedback
+- **Progressive Enhancement**: Works with JavaScript disabled
+
+### 3. Database Design
+- **Relational Model**: Products with one-to-many variants
+- **Automatic Timestamps**: PostgreSQL triggers for created_at/updated_at
+- **Performance Indexes**: Optimized for search and sort operations
+- **Data Integrity**: Foreign key constraints and cascade operations
+
+### 4. Security & Performance
+- **SQL Injection Prevention**: Parameterized queries throughout
+- **XSS Protection**: Thymeleaf auto-escaping
+- **CSRF Protection**: Spring Security default configuration
+- **Caching Strategy**: ID-based sync to prevent data loss
+
+## 🚦 API Endpoints
+
+### Product Management
+- `GET /` - Main product interface
+- `GET /products` - Load products (HTMX, supports pagination/search/sort)
+- `POST /products` - Add new product
+- `GET /products/{id}/edit` - Load edit form (HTMX)
+- `PUT /products/{id}` - Update product (HTMX)
+- `DELETE /products/{id}` - Delete product (HTMX)
+
+### Search Interface
+- `GET /search` - Dedicated search page
+- `GET /search/products` - Search products (HTMX)
+
+## 🎨 UI Components
+
+### WebAwesome Component Usage
+```html
+<!-- Search with icon -->
+<wa-input type="text" size="large" class="wa-w-full">
+    <wa-icon name="search" slot="prefix"></wa-icon>
+</wa-input>
+
+<!-- Action buttons -->
+<wa-button variant="success" size="small">
+    <wa-icon name="plus" slot="prefix"></wa-icon>
+    Add Product
+</wa-button>
+
+<!-- Delete confirmation dialog -->
+<wa-dialog id="delete-confirm-dialog" label="Confirm Delete">
+    <wa-icon name="triangle-exclamation" class="wa-text-danger"></wa-icon>
+    <!-- Dialog content -->
+</wa-dialog>
+```
+
+### Layout Patterns
+- **Card Containers**: `wa-card` for content sections
+- **Flexbox Layouts**: `wa-flex wa-gap-*` for spacing
+- **Responsive Design**: `wa-w-full wa-max-w-*` for containers
+- **Visual Separation**: `wa-divider` components between sections
+
+## 🔄 Development Workflow
+
+### Code Organization
+- **Controllers**: Handle HTTP requests and model binding
+- **Repositories**: Database access with JdbcClient/JdbcTemplate
+- **Services**: Business logic and external API integration
+- **Templates**: Thymeleaf fragments for reusable components
+
+### Testing Strategy
+- **Unit Tests**: Repository and service layer testing
+- **Integration Tests**: Full application context testing
+- **Manual Testing**: Browser-based UI testing
+
+### Version Control
+- **Feature Branches**: Separate branches for major features
+- **Commit Standards**: Conventional commits with detailed descriptions
+- **Code Review**: Pull request workflow for quality assurance
+
+## 🚀 Deployment
+
+### Production Considerations
+- **Environment Variables**: Database credentials, API keys
+- **Logging**: Structured logging for monitoring
+- **Health Checks**: Spring Actuator endpoints
+- **Docker**: Containerization for deployment
+
+### Monitoring
+- **Application Metrics**: Spring Boot Actuator
+- **Database Performance**: PostgreSQL query analysis
+- **Frontend Performance**: HTMX request timing
+
+## 🔮 Future Enhancements
+
+### Short Term
+- **Bulk Operations**: Multi-select for batch delete
+- **Data Export**: CSV/Excel export functionality
+- **Advanced Search**: Multi-field search filters
+- **Variant Management**: Direct variant editing interface
+
+### Long Term
+- **API Layer**: REST API for external integrations
+- **Caching**: Redis integration for performance
+- **Authentication**: User management and permissions
+- **Analytics**: Usage statistics and reporting
+
+## 📝 Technical Notes
+
+### Critical Implementation Details
+
+#### WebAwesome Integration
+The frontend was completely rewritten to use WebAwesome 3.0 components, eliminating all custom CSS in favor of the design system:
+
+```kotlin
+// Controller supports both POST and PUT for form compatibility
+@PostMapping("/products/{id}/update") // Traditional form submission
+@PutMapping("/products/{id}")         // HTMX requests
+```
+
+#### HTMX Event Management
+Global event listeners handle dialog lifecycle to prevent conflicts:
+
+```javascript
+document.body.addEventListener('htmx:afterSwap', function(event) {
+    if (event.target.id === 'product-table-fragment') {
+        // Close edit dialog after successful update
+        const editDialog = document.getElementById('edit-dialog');
+        if (editDialog && editDialog.open) {
+            editDialog.open = false;
+        }
+    }
+});
+```
+
+#### Data Sync Protection
+The sync service uses ID caching to prevent data loss:
+
+```kotlin
+private val syncedProductIds = ConcurrentHashMap.newKeySet<Long>()
+
+// Only sync new products, never delete existing data
+if (!syncedProductIds.contains(productId)) {
+    // Process new product
+}
+```
+
+## 🤝 Contributing
+
+This project demonstrates modern Spring Boot development with WebAwesome UI components. The codebase follows Spring Boot best practices and maintains clear separation of concerns for easy maintenance and extension.
+
+### Development Guidelines
+- Follow Kotlin coding conventions
+- Use WebAwesome components instead of custom CSS
+- Maintain HTMX compatibility for all interactions
+- Write comprehensive commit messages
+- Test all user interactions thoroughly
+
+---
+
+**Project Status**: ✅ Production Ready  
+**Latest Version**: v1.0  
+**Repository**: https://github.com/oxcod/products (private)  
+**Deployment**: localhost:9001
