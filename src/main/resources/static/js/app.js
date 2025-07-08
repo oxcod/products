@@ -1,53 +1,42 @@
 // Product Management Application Scripts
 
-// Modal Functions
-function openEditModal() {
-    document.getElementById('edit-modal').style.display = 'block';
-}
+// WebAwesome Delete Confirmation Dialog
+let deleteProductData = {};
 
-function closeEditModal() {
-    document.getElementById('edit-modal').style.display = 'none';
-}
+function showDeleteConfirm(button) {
+    // Get product data from button attributes
+    deleteProductData = {
+        id: button.getAttribute('data-product-id'),
+        title: button.getAttribute('data-product-title'),
+        deleteUrl: button.getAttribute('data-delete-url')
 
-function closeEditModalOnOverlay(event) {
-    if (event.target === event.currentTarget) {
-        closeEditModal();
-    }
-}
-
-// Delete Button Functionality
-function handleDeleteClick(event, element) {
-    event.preventDefault();
+    };
     
-    if (element.classList.contains('delete-confirm')) {
-        // Second click - trigger HTMX delete
-        htmx.trigger(element, 'confirmed');
-    } else {
-        // First click - show confirmation
-        element.classList.add('delete-confirm');
-        element.innerHTML = '<span style="color: var(--wa-color-success-fill-loud); margin-right: 0.3rem;">✓</span>Sure?';
-        element.style.color = 'var(--wa-color-danger-fill-loud)';
-        element.style.textDecoration = 'none';
-        element.style.cursor = 'pointer';
-        
-        // Reset after 3 seconds if not clicked
-        setTimeout(function() {
-            if (element.classList.contains('delete-confirm')) {
-                element.classList.remove('delete-confirm');
-                element.innerHTML = 'Delete';
-            }
-        }, 3000);
-    }
+    // Update dialog message with product title
+    const messageElement = document.getElementById('delete-message');
+    messageElement.textContent = `Are you sure you want to delete "${deleteProductData.title}"? This action cannot be undone.`;
     
-    return false;
+    // Show the dialog
+    document.getElementById('delete-confirm-dialog').open = true;
+}
+
+function confirmDelete() {
+    // Close dialog first
+    document.getElementById('delete-confirm-dialog').open = false;
+    
+    // Trigger HTMX delete request
+    htmx.ajax('DELETE', deleteProductData.deleteUrl, {
+        target: '#product-table-fragment',
+        swap: 'outerHTML'
+    });
 }
 
 // HTMX Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
-    // Listen for HTMX events to open modal after content loads
+    // Listen for HTMX events to open dialog after content loads
     document.body.addEventListener('htmx:afterSwap', function(event) {
-        if (event.target.id === 'modal-content') {
-            openEditModal();
+        if (event.target.id === 'dialog-content') {
+            document.getElementById('edit-dialog').open = true;
         }
     });
 });

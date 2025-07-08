@@ -1,77 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="search-results" id="search-results">
-        <div th:if="${products != null and !products.isEmpty()}">
-            <p th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}" class="wa-text-color-subdued wa-mb-m"></p>
-            <table class="product-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Product Type</th>
-                        <th>Variants</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${products}">
-                        <td th:text="${item.product.id}"></td>
-                        <td th:text="${item.product.title}"></td>
-                        <td th:text="${item.product.productType ?: 'N/A'}"></td>
-                        <td>
-                            <div class="variant-list" th:if="${!item.variants.isEmpty()}">
-                                <div th:each="variant : ${item.variants}">
-                                    <small>
-                                        <span th:text="${variant.title}"></span>
-                                        <span th:if="${variant.price}" th:text="' - ' + ${variant.price}"></span>
-                                        <span th:if="${variant.available != null}">
-                                            (<span th:text="${variant.available ? 'Available' : 'Not Available'}"></span>)
-                                        </span>
-                                    </small>
-                                </div>
-                            </div>
-                            <div th:if="${item.variants.isEmpty()}">
-                                <small>No variants</small>
-                            </div>
-                        </td>
-                        <td th:text="${#temporals.format(item.product.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td th:text="${#temporals.format(item.product.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td>
-                            <a href="#" 
-                               th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
-                               hx-target="#modal-content"
-                               hx-swap="innerHTML"
-                               class="edit-link">
-                                Edit
-                            </a>
-                            <a href="#" 
-                               class="delete-btn"
-                               th:data-product-id="${item.product.id}"
-                               th:attr="hx-delete=@{/products/{id}(id=${item.product.id})}"
-                               hx-target="#search-results"
-                               hx-swap="innerHTML"
-                               hx-trigger="confirmed"
-                               hx-vals='{"query": "[[${ query }]]"}'
-                               onclick="return handleDeleteClick(event, this)">
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div th:fragment="search-results">
+        
+        <!-- Search Results Count -->
+        <div th:if="${products != null and !products.isEmpty()}" class="wa-mb-4">
+            <wa-alert variant="success" open>
+                <wa-icon name="check-circle" slot="icon"></wa-icon>
+                <span th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}"></span>
+            </wa-alert>
         </div>
         
-        <div th:if="${products == null or products.isEmpty()}" class="no-results">
-            <p th:if="${query != null and !query.isEmpty()}">
-                No products found for: <strong th:text="${query}"></strong>
+        <!-- Results Table -->
+        <wa-card th:if="${products != null and !products.isEmpty()}" class="wa-overflow-hidden">
+            <div class="wa-overflow-x-auto">
+                <table class="wa-w-full wa-table-auto">
+                    <thead>
+                        <tr class="wa-bg-neutral-100 wa-border-b wa-border-neutral-200">
+                            <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">ID</th>
+                            <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Title</th>
+                            <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Product Type</th>
+                            <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Variants</th>
+                            <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${products}" 
+                            class="wa-border-b wa-border-neutral-100 hover:wa-bg-neutral-50 wa-transition-colors">
+                            <td class="wa-p-3 wa-font-mono wa-text-sm wa-text-neutral-600" th:text="${item.product.id}"></td>
+                            <td class="wa-p-3 wa-font-medium wa-text-neutral-900" th:text="${item.product.title}"></td>
+                            <td class="wa-p-3 wa-text-neutral-600" th:text="${item.product.productType ?: 'N/A'}"></td>
+                            <td class="wa-p-3">
+                                <div th:if="${!item.variants.isEmpty()}">
+                                    <div th:each="variant : ${item.variants}" class="wa-text-sm wa-text-neutral-600 wa-leading-relaxed">
+                                        <span th:text="${variant.title}"></span>
+                                        <span th:if="${variant.price}" th:text="' - ' + ${variant.price}" class="wa-font-medium"></span>
+                                        <span th:if="${variant.available != null}">
+                                            <wa-badge th:if="${variant.available}" variant="success" size="small" class="wa-ml-1">Available</wa-badge>
+                                            <wa-badge th:unless="${variant.available}" variant="danger" size="small" class="wa-ml-1">Unavailable</wa-badge>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span th:if="${item.variants.isEmpty()}" class="wa-text-sm wa-text-neutral-400">No variants</span>
+                            </td>
+                            <td class="wa-p-3">
+                                <div class="wa-flex wa-gap-2">
+                                    <wa-button 
+                                        variant="default" 
+                                        size="small"
+                                        th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
+                                        hx-target="#dialog-content"
+                                        hx-swap="innerHTML"
+                                        hx-on::after-swap="document.getElementById('edit-dialog').open = true">
+                                        <wa-icon name="pencil" slot="prefix"></wa-icon>
+                                        Edit
+                                    </wa-button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </wa-card>
+        
+        <!-- No Results -->
+        <wa-card th:if="${products == null or products.isEmpty()}" class="wa-text-center wa-p-8">
+            <wa-icon name="search-x" class="wa-text-6xl wa-text-neutral-400 wa-mb-4"></wa-icon>
+            <h3 th:if="${query != null and !query.isEmpty()}" 
+               class="wa-text-lg wa-font-semibold wa-text-neutral-600 wa-mb-2">
+                No products found for: <span class="wa-font-mono wa-text-primary" th:text="${query}"></span>
+            </h3>
+            <p class="wa-text-sm wa-text-neutral-500">
+                Try searching with different keywords.
             </p>
-            <p th:if="${query == null or query.isEmpty()}">
-                Start typing to search for products...
-            </p>
-        </div>
+        </wa-card>
+        
     </div>
 </body>
 </html>

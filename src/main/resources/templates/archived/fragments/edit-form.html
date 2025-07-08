@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="edit-form">
+        <div class="wa-p-xl">
+            <form th:action="@{/products/{id}(id=${product.id})}" 
+                  th:method="post"
+                  hx-put="@{/products/{id}(id=${product.id})}"
+                  hx-target="#product-table-fragment"
+                  hx-swap="outerHTML"
+                  hx-on::after-request="document.getElementById('edit-dialog').open = false">
+                
+                <div class="wa-mb-xl">
+                    <wa-input 
+                        type="number"
+                        name="id" 
+                        th:value="${product.id}" 
+                        readonly
+                        disabled
+                        label="Product ID"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-mb-xl">
+                    <wa-input 
+                        type="text"
+                        name="title" 
+                        th:value="${product.title}" 
+                        required
+                        label="Product Title"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-mb-xl">
+                    <wa-input 
+                        type="text"
+                        name="productType" 
+                        th:value="${product.productType}"
+                        label="Product Type"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-flex wa-gap-s" slot="footer">
+                    <wa-button type="submit" variant="primary">
+                        Update Product
+                    </wa-button>
+                    <wa-button type="button" variant="default" data-dialog="close">
+                        Cancel
+                    </wa-button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

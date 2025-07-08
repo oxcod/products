@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="search-results" id="search-results">
+        <div th:if="${products != null and !products.isEmpty()}">
+            <p th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}" class="wa-text-color-subdued wa-mb-m"></p>
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Product Type</th>
+                        <th>Variants</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${products}">
+                        <td th:text="${item.product.id}"></td>
+                        <td th:text="${item.product.title}"></td>
+                        <td th:text="${item.product.productType ?: 'N/A'}"></td>
+                        <td>
+                            <div class="variant-list" th:if="${!item.variants.isEmpty()}">
+                                <div th:each="variant : ${item.variants}">
+                                    <small>
+                                        <span th:text="${variant.title}"></span>
+                                        <span th:if="${variant.price}" th:text="' - ' + ${variant.price}"></span>
+                                        <span th:if="${variant.available != null}">
+                                            (<span th:text="${variant.available ? 'Available' : 'Not Available'}"></span>)
+                                        </span>
+                                    </small>
+                                </div>
+                            </div>
+                            <div th:if="${item.variants.isEmpty()}">
+                                <small>No variants</small>
+                            </div>
+                        </td>
+                        <td th:text="${#temporals.format(item.product.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td th:text="${#temporals.format(item.product.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <a href="#" 
+                               th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
+                               hx-target="#modal-content"
+                               hx-swap="innerHTML"
+                               class="edit-link">
+                                Edit
+                            </a>
+                            <a href="#" 
+                               class="delete-btn"
+                               th:data-product-id="${item.product.id}"
+                               th:attr="hx-delete=@{/products/{id}(id=${item.product.id})}"
+                               hx-target="#search-results"
+                               hx-swap="innerHTML"
+                               hx-trigger="confirmed"
+                               hx-vals='{"query": "[[${ query }]]"}'
+                               onclick="return handleDeleteClick(event, this)">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div th:if="${products == null or products.isEmpty()}" class="no-results">
+            <p th:if="${query != null and !query.isEmpty()}">
+                No products found for: <strong th:text="${query}"></strong>
+            </p>
+            <p th:if="${query == null or query.isEmpty()}">
+                Start typing to search for products...
+            </p>
+        </div>
+    </div>
+</body>
+</html>

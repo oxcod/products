@@ -9,35 +9,49 @@
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/webawesome.css" />
     <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/webawesome.loader.js"></script>
     <script src="https://unpkg.com/htmx.org@2.0.6/dist/htmx.min.js"></script>
-</head>
-<body class="wa-bg-surface-raised wa-flex wa-justify-center wa-min-height-screen wa-align-items-start wa-p-none wa-m-none">
-    <wa-card class="wa-mx-auto wa-mt-xl wa-mb-xl wa-p-xl">
-        <div class="wa-mb-xl">
-            <h1 class="wa-text-h2 wa-mb-m">Product Management</h1>
-        </div>
-        
-        <div class="wa-mb-xxl">
-            <div hx-get="/products"
-                 hx-target="#products-container"
-                 hx-swap="innerHTML">
-                <wa-button variant="primary" size="medium">
-                    Load Products
-                </wa-button>
-            </div>
-        </div>
-        
-        <div id="products-container">
-            <!-- Product table will be loaded here -->
-        </div>
-    </wa-card>
-    
-    <!-- Modal container -->
-    <div id="edit-modal" class="wa-position-fixed wa-inset-0 wa-width-full wa-height-full wa-z-50" style="display: none; background-color: var(--wa-color-overlay);" onclick="closeEditModalOnOverlay(event)">
-        <wa-card class="wa-position-absolute wa-max-width-lg wa-width-90 wa-max-height-90vh wa-overflow-y-auto wa-z-51" style="top: 50%; left: 50%; transform: translate(-50%, -50%);" id="modal-content">
-            <!-- Edit form will be loaded here -->
-        </wa-card>
-    </div>
-    
     <script src="/js/app.js"></script>
+</head>
+<body class="wa-bg-neutral-0 wa-flex wa-justify-center wa-min-h-screen wa-p-none wa-m-none">
+    <wa-card class="wa-max-w-4xl wa-w-full wa-mt-6 wa-mb-6 wa-mx-auto wa-p-6">
+        
+        <!-- Header Section -->
+            <header class="wa-flex wa-items-center wa-gap-3">
+                <h1 class="wa-text-2xl wa-font-bold wa-text-neutral-900">
+                    <wa-icon name="boxes" class="wa-text-3xl wa-text-primary"></wa-icon>
+                    Product Management
+                </h1>
+                <!-- Load Products Section -->
+                    <section class="wa-text-center wa-py-6">
+                        <div hx-get="/products"
+                             hx-target="#products-container"
+                             hx-swap="innerHTML">
+                            <wa-button variant="primary" size="large">
+                                <wa-icon name="refresh" slot="prefix"></wa-icon>
+                                Load Products
+                            </wa-button>
+                        </div>
+                    </section>
+            </header>
+        </wa-card>
+
+        <!-- Products Container -->
+        <main id="products-container" >
+            <wa-card class="wa-text-center wa-p-8 wa-bg-neutral-50">
+                <h3 class="wa-text-lg wa-font-semibold wa-text-neutral-600 wa-mb-2">
+                    No Products Loaded
+                </h3>
+                <p class="wa-text-sm wa-text-neutral-500">
+                    Click "Load Products" to view the product catalog
+                </p>
+            </wa-card>
+        </main>
+
+    <!-- WebAwesome Dialog for Edit Form -->
+    <wa-dialog id="edit-dialog" label="Edit Product" class="wa-max-w-lg">
+        <div id="dialog-content">
+            <!-- Edit form will be loaded here -->
+        </div>
+    </wa-dialog>
+    
 </body>
 </html>

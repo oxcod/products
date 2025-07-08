@@ -9,19 +9,28 @@
     <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/webawesome.css" />
     <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/webawesome.loader.js"></script>
     <script src="https://unpkg.com/htmx.org@2.0.6/dist/htmx.min.js"></script>
+    <script src="/js/app.js"></script>
 </head>
-<body class="wa-bg-surface-raised wa-flex wa-justify-center wa-min-height-screen wa-align-items-start wa-p-none wa-m-none">
-    <wa-card class="wa-mx-auto wa-mt-xl wa-mb-xl wa-p-xl" style="max-width: 1000px;">
-        <div class="wa-mb-xl">
-            <a href="/" class="wa-text-color-brand wa-text-decoration-none wa-display-inline-block wa-mb-m"
-               onmouseover="this.style.textDecoration='underline'" 
-               onmouseout="this.style.textDecoration='none'">
-                &larr; Back to Products
-            </a>
-            <h1 class="wa-text-h2">Search Products</h1>
-        </div>
+<body class="wa-bg-neutral-0 wa-flex wa-justify-center wa-min-h-screen wa-p-none wa-m-none">
+    <wa-card class="wa-max-w-4xl wa-w-full wa-mt-6 wa-mb-6 wa-mx-auto wa-p-6">
         
-        <div class="wa-mb-xl">
+        <!-- Header Section -->
+        <header class="wa-mb-6">
+            <nav class="wa-mb-4">
+                <a href="/" class="wa-text-primary wa-no-underline wa-flex wa-items-center wa-gap-2 hover:wa-text-primary-600 wa-transition-colors">
+                    <wa-icon name="arrow-left"></wa-icon>
+                    Back to Products
+                </a>
+            </nav>
+            
+            <div class="wa-flex wa-items-center wa-gap-3">
+                <wa-icon name="search" class="wa-text-3xl wa-text-primary"></wa-icon>
+                <h1 class="wa-text-2xl wa-font-bold wa-text-neutral-900">Search Products</h1>
+            </div>
+        </header>
+        
+        <!-- Search Section -->
+        <section class="wa-mb-6">
             <wa-input
                 type="text" 
                 placeholder="Search products by title..."
@@ -31,25 +40,32 @@
                 hx-target="#search-results"
                 hx-swap="innerHTML"
                 size="large"
-                class="wa-width-full">
-            ></wa-input>
-        </div>
+                class="wa-w-full">
+                <wa-icon name="search" slot="prefix"></wa-icon>
+            </wa-input>
+        </section>
         
-        <div id="search-results">
-            <!-- Search results will be loaded here -->
-            <wa-card class="wa-text-center wa-text-color-quiet">
-                Start typing to search for products...
+        <!-- Search Results -->
+        <main id="search-results">
+            <wa-card class="wa-text-center wa-p-8 wa-bg-neutral-50">
+                <wa-icon name="search" class="wa-text-6xl wa-text-neutral-400 wa-mb-4"></wa-icon>
+                <h3 class="wa-text-lg wa-font-semibold wa-text-neutral-600 wa-mb-2">
+                    Ready to Search
+                </h3>
+                <p class="wa-text-sm wa-text-neutral-500">
+                    Start typing to search for products...
+                </p>
             </wa-card>
-        </div>
+        </main>
+        
     </wa-card>
     
-    <!-- Modal container -->
-    <div id="edit-modal" class="wa-position-fixed wa-inset-0 wa-width-full wa-height-full wa-z-50" style="display: none; background-color: var(--wa-color-overlay);" onclick="closeEditModalOnOverlay(event)">
-        <wa-card class="wa-position-absolute wa-max-width-lg wa-width-90 wa-max-height-90vh wa-overflow-y-auto wa-z-51" style="top: 50%; left: 50%; transform: translate(-50%, -50%);" id="modal-content">
+    <!-- WebAwesome Dialog for Edit Form -->
+    <wa-dialog id="edit-dialog" label="Edit Product" class="wa-max-w-lg">
+        <div id="dialog-content">
             <!-- Edit form will be loaded here -->
-        </wa-card>
-    </div>
-
-    <script src="/js/app.js"></script>
+        </div>
+    </wa-dialog>
+    
 </body>
 </html>

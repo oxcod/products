@@ -117,6 +117,27 @@ class ProductController(
         return "fragments/edit-form :: edit-form"
     }
     
+    @PutMapping("/products/{id}")
+    fun updateProductPut(
+        @PathVariable id: Long,
+        @RequestParam title: String,
+        @RequestParam(required = false) productType: String?,
+        @RequestParam(defaultValue = "id") sortBy: String,
+        @RequestParam(defaultValue = "asc") sortOrder: String,
+        model: Model
+    ): String {
+        val existingProduct = productRepository.findById(id)
+        if (existingProduct != null) {
+            val updatedProduct = existingProduct.copy(
+                title = title,
+                productType = productType
+            )
+            productRepository.save(updatedProduct)
+        }
+        // Return the products table with current sort parameters
+        return getProducts(0, null, sortBy, sortOrder, model)
+    }
+    
     @PostMapping("/products/{id}/update")
     fun updateProduct(
         @PathVariable id: Long,

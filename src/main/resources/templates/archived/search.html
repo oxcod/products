@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" class="wa-theme-shoelace">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Products</title>
+
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/themes/shoelace.css" />
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/webawesome.css" />
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/webawesome.loader.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.6/dist/htmx.min.js"></script>
+</head>
+<body class="wa-bg-surface-raised wa-flex wa-justify-center wa-min-height-screen wa-align-items-start wa-p-none wa-m-none">
+    <wa-card class="wa-mx-auto wa-mt-xl wa-mb-xl wa-p-xl" style="max-width: 1000px;">
+        <div class="wa-mb-xl">
+            <a href="/" class="wa-text-color-brand wa-text-decoration-none wa-display-inline-block wa-mb-m"
+               onmouseover="this.style.textDecoration='underline'" 
+               onmouseout="this.style.textDecoration='none'">
+                &larr; Back to Products
+            </a>
+            <h1 class="wa-text-h2">Search Products</h1>
+        </div>
+        
+        <div class="wa-mb-xl">
+            <wa-input
+                type="text" 
+                placeholder="Search products by title..."
+                name="query"
+                hx-get="/search/products"
+                hx-trigger="keyup changed delay:300ms"
+                hx-target="#search-results"
+                hx-swap="innerHTML"
+                size="large"
+                class="wa-width-full">
+            ></wa-input>
+        </div>
+        
+        <div id="search-results">
+            <!-- Search results will be loaded here -->
+            <wa-card class="wa-text-center wa-text-color-quiet">
+                Start typing to search for products...
+            </wa-card>
+        </div>
+    </wa-card>
+    
+    <!-- WebAwesome Dialog for Edit Form -->
+    <wa-dialog id="edit-dialog" label="Edit Product" light-dismiss style="--width: 500px;">
+        <div id="dialog-content">
+            <!-- Edit form will be loaded here -->
+        </div>
+    </wa-dialog>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

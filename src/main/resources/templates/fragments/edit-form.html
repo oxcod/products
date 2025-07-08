@@ -1,67 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <div th:fragment="edit-form" style="position: relative;">
-        <div class="wa-p-xl">
-            <button onclick="closeEditModal()" 
-                    style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--wa-color-neutral-text-quiet); padding: 0; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; z-index: 10;"
-                    onmouseover="this.style.color='var(--wa-color-neutral-text-loud)'" 
-                    onmouseout="this.style.color='var(--wa-color-neutral-text-quiet)'">
-                ×
-            </button>
+    <div th:fragment="edit-form" class="wa-p-4">
+        
+        <form th:action="@{/products/{id}(id=${product.id})}" 
+              th:method="post"
+              hx-put="@{/products/{id}(id=${product.id})}"
+              hx-target="#product-table-fragment"
+              hx-swap="outerHTML"
+              hx-on::after-request="document.getElementById('edit-dialog').open = false"
+              class="wa-space-y-6">
             
-            <h3 class="wa-mb-l">Edit Product</h3>
+            <!-- Product ID (Read-only) -->
+            <wa-input 
+                type="number"
+                name="id" 
+                th:value="${product.id}" 
+                readonly
+                disabled
+                label="Product ID"
+                class="wa-w-full">
+                <wa-icon name="hash" slot="prefix"></wa-icon>
+            </wa-input>
+            <wa-divider></wa-divider>
+            <!-- Product Title -->
+            <wa-input 
+                type="text"
+                name="title" 
+                th:value="${product.title}" 
+                required
+                label="Product Title"
+                class="wa-w-full">
+                <wa-icon name="tag" slot="prefix"></wa-icon>
+            </wa-input>
+            <wa-divider></wa-divider>
+            <!-- Product Type -->
+            <wa-input 
+                type="text"
+                name="productType" 
+                th:value="${product.productType}"
+                label="Product Type"
+                placeholder="Enter product type"
+                class="wa-w-full">
+                <wa-icon name="folder" slot="prefix"></wa-icon>
+            </wa-input>
+            <wa-divider></wa-divider>
+            <!-- Form Actions -->
+            <div slot="footer" class="wa-flex wa-gap-3 wa-pt-6 wa-mt-6">
+                <wa-button type="submit" variant="primary" class="wa-flex-1">
+                    <wa-icon name="check" slot="prefix"></wa-icon>
+                    Update Product
+                </wa-button>
+                <wa-button type="button" variant="default" data-dialog="close">
+                    <wa-icon name="x" slot="prefix"></wa-icon>
+                    Cancel
+                </wa-button>
+            </div>
             
-            <form th:action="@{/products/{id}(id=${product.id})}" 
-                  th:method="post"
-                  hx-put="@{/products/{id}(id=${product.id})}"
-                  hx-target="#product-table-fragment"
-                  hx-swap="outerHTML"
-                  hx-on::after-request="closeEditModal()">
-                
-                <div class="wa-mb-xl">
-                    <wa-input 
-                        type="number"
-                        name="id" 
-                        th:value="${product.id}" 
-                        readonly
-                        disabled
-                        label="Product ID"
-                        class="wa-width-full">
-                    </wa-input>
-                </div>
-                
-                <div class="wa-mb-xl">
-                    <wa-input 
-                        type="text"
-                        name="title" 
-                        th:value="${product.title}" 
-                        required
-                        label="Product Title"
-                        class="wa-width-full">
-                    </wa-input>
-                </div>
-                
-                <div class="wa-mb-xl">
-                    <wa-input 
-                        type="text"
-                        name="productType" 
-                        th:value="${product.productType}"
-                        label="Product Type"
-                        class="wa-width-full">
-                    </wa-input>
-                </div>
-                
-                <div class="wa-flex wa-gap-s">
-                    <wa-button type="submit" variant="primary">
-                        Update Product
-                    </wa-button>
-                    <wa-button type="button" variant="default" onclick="closeEditModal()">
-                        Cancel
-                    </wa-button>
-                </div>
-            </form>
-        </div>
+        </form>
+        
     </div>
 </body>
 </html>

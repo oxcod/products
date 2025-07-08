@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="wa-theme-shoelace">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Application</title>
+
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/themes/shoelace.css" />
+    <link rel="stylesheet" href="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/styles/webawesome.css" />
+    <script type="module" src="https://early.webawesome.com/webawesome@3.0.0-beta.1/dist/webawesome.loader.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.6/dist/htmx.min.js"></script>
+</head>
+<body class="wa-bg-surface-raised wa-flex wa-justify-center wa-min-height-screen wa-align-items-start wa-p-none wa-m-none">
+    <wa-card class="wa-mx-auto wa-mt-xl wa-mb-xl wa-p-xl">
+        <div class="wa-mb-xl">
+            <h1 class="wa-text-h2 wa-mb-m">Product Management</h1>
+        </div>
+        
+        <div class="wa-mb-xxl">
+            <div hx-get="/products"
+                 hx-target="#products-container"
+                 hx-swap="innerHTML">
+                <wa-button variant="primary" size="medium">
+                    Load Products
+                </wa-button>
+            </div>
+        </div>
+        
+        <div id="products-container">
+            <!-- Product table will be loaded here -->
+        </div>
+    </wa-card>
+    
+    <!-- WebAwesome Dialog for Edit Form -->
+    <wa-dialog id="edit-dialog" label="Edit Product" light-dismiss style="--width: 500px;">
+        <div id="dialog-content">
+            <!-- Edit form will be loaded here -->
+        </div>
+    </wa-dialog>
+    <script src="/js/app.js"></script>
+</body>
+</html>

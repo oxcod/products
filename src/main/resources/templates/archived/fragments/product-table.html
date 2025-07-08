@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="product-table" id="product-table-fragment">
+        <!-- Search box -->
+        <div class="wa-mb-xxl">
+            <wa-input 
+                type="text" 
+                placeholder="Search products by title..."
+                name="query"
+                th:value="${query}"
+                hx-get="/products"
+                hx-trigger="keyup changed delay:300ms"
+                hx-target="#product-table-fragment"
+                hx-swap="outerHTML"
+                size="large"
+                class="wa-width-full">
+            ></wa-input>
+        </div>
+        
+        <!-- Search results info -->
+        <div th:if="${query != null and !query.isEmpty()}" class="wa-mb-m wa-text-color-subdued">
+            <p th:text="'Found ' + ${products.size()} + ' results for: ' + ${query}"></p>
+        </div>
+        
+        <!-- Product table wrapper -->
+        <div class="wa-overflow-x-auto wa-border wa-border-neutral-stroke-quiet wa-rounded-m wa-mb-xxl" 
+             th:if="${products != null and !products.isEmpty()}"
+             style="background-color: var(--wa-color-surface-raised);">
+            <table class="wa-width-full">
+                <thead>
+                    <tr style="background-color: var(--wa-color-neutral-fill-normal); border-bottom: 2px solid var(--wa-color-neutral-stroke-normal);">
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">
+                            <a href="#" 
+                               th:attr="hx-get=@{/products(page=0,query=${query},sortBy='id',sortOrder=${sortBy == 'id' and sortOrder == 'asc' ? 'desc' : 'asc'})}"
+                               hx-target="#product-table-fragment"
+                               hx-swap="outerHTML"
+                               style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;"
+                               onmouseover="this.style.color='var(--wa-color-brand-fill-loud)'" 
+                               onmouseout="this.style.color='inherit'">
+                                ID
+                                <span th:if="${sortBy == 'id' and sortOrder == 'asc'}">▲</span>
+                                <span th:if="${sortBy == 'id' and sortOrder == 'desc'}">▼</span>
+                            </a>
+                        </th>
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">
+                            <a href="#" 
+                               th:attr="hx-get=@{/products(page=0,query=${query},sortBy='title',sortOrder=${sortBy == 'title' and sortOrder == 'asc' ? 'desc' : 'asc'})}"
+                               hx-target="#product-table-fragment"
+                               hx-swap="outerHTML"
+                               style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;"
+                               onmouseover="this.style.color='var(--wa-color-brand-fill-loud)'" 
+                               onmouseout="this.style.color='inherit'">
+                                Title
+                                <span th:if="${sortBy == 'title' and sortOrder == 'asc'}">▲</span>
+                                <span th:if="${sortBy == 'title' and sortOrder == 'desc'}">▼</span>
+                            </a>
+                        </th>
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">Product Type</th>
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">Variants</th>
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">Created At</th>
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">Updated At</th>
+                        <th class="wa-p-m wa-text-left wa-font-semibold wa-text-color-normal">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${products}" 
+                        style="border-bottom: 1px solid var(--wa-color-neutral-stroke-quiet);"
+                        onmouseover="this.style.backgroundColor='var(--wa-color-neutral-fill-quiet)'" 
+                        onmouseout="this.style.backgroundColor='transparent'">
+                        <td class="wa-p-m" th:text="${item.product.id}"></td>
+                        <td class="wa-p-m" th:text="${item.product.title}"></td>
+                        <td class="wa-p-m" th:text="${item.product.productType ?: 'N/A'}"></td>
+                        <td class="wa-p-m">
+                            <div th:if="${!item.variants.isEmpty()}">
+                                <div th:each="variant : ${item.variants}" class="wa-text-sm wa-text-color-quiet wa-line-height-normal">
+                                    <span th:text="${variant.title}"></span>
+                                    <span th:if="${variant.price}" th:text="' - ' + ${variant.price}"></span>
+                                    <span th:if="${variant.available != null}">
+                                        (<span th:text="${variant.available ? 'Available' : 'Not Available'}"></span>)
+                                    </span>
+                                </div>
+                            </div>
+                            <div th:if="${item.variants.isEmpty()}" class="wa-text-sm wa-text-color-quiet">
+                                No variants
+                            </div>
+                        </td>
+                        <td class="wa-p-m" th:text="${#temporals.format(item.product.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td class="wa-p-m" th:text="${#temporals.format(item.product.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td class="wa-p-m">
+                            <a href="#" 
+                               th:attr="hx-get=@{/products/{id}/edit(id=${item.product.id})}"
+                               hx-target="#dialog-content"
+                               hx-swap="innerHTML"
+                               style="color: var(--wa-color-brand-fill-loud); text-decoration: none; margin-right: 1rem; font-weight: 500;"
+                               onmouseover="this.style.textDecoration='underline'; this.style.fontWeight='600'" 
+                               onmouseout="this.style.textDecoration='none'; this.style.fontWeight='500'">
+                                Edit
+                            </a>
+                            <a href="#" 
+                               style="color: var(--wa-color-danger-fill-loud); text-decoration: none; cursor: pointer; font-weight: 500;"
+                               th:data-product-id="${item.product.id}"
+                               th:attr="hx-delete=@{/products/{id}(id=${item.product.id})}"
+                               hx-target="#product-table-fragment"
+                               hx-swap="outerHTML"
+                               hx-trigger="confirmed"
+                               onclick="return handleDeleteClick(event, this)"
+                               onmouseover="if(!this.classList.contains('delete-confirm')) { this.style.textDecoration='underline'; this.style.fontWeight='600'; }" 
+                               onmouseout="if(!this.classList.contains('delete-confirm')) { this.style.textDecoration='none'; this.style.fontWeight='500'; }">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination controls -->
+        <div th:if="${totalPages > 1 and (query == null or query.isEmpty())}" class="wa-mb-xl wa-flex wa-justify-center wa-mt-xl">
+            <div class="wa-display-inline-flex wa-gap-s wa-align-items-center">
+                <wa-button
+                    th:if="${currentPage > 0}"
+                    variant="default" 
+                    size="small"
+                    th:attr="hx-get=@{/products(page=${currentPage - 1},sortBy=${sortBy},sortOrder=${sortOrder})}"
+                    hx-target="#product-table-fragment"
+                    hx-swap="outerHTML">
+                    Previous
+                </wa-button>
+                
+                <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                      class="wa-display-inline-block">
+                    <wa-button
+                        th:if="${pageNum == currentPage}"
+                        variant="primary" 
+                        size="small"
+                        disabled>
+                        <span th:text="${pageNum + 1}"></span>
+                    </wa-button>
+                    <wa-button
+                        th:if="${pageNum != currentPage}"
+                        variant="default" 
+                        size="small"
+                        th:attr="hx-get=@{/products(page=${pageNum},sortBy=${sortBy},sortOrder=${sortOrder})}"
+                        hx-target="#product-table-fragment"
+                        hx-swap="outerHTML">
+                        <span th:text="${pageNum + 1}"></span>
+                    </wa-button>
+                </span>
+                
+                <wa-button
+                    th:if="${currentPage < totalPages - 1}"
+                    variant="default" 
+                    size="small"
+                    th:attr="hx-get=@{/products(page=${currentPage + 1},sortBy=${sortBy},sortOrder=${sortOrder})}"
+                    hx-target="#product-table-fragment"
+                    hx-swap="outerHTML">
+                    Next
+                </wa-button>
+            </div>
+        </div>
+        
+        <!-- No results message -->
+        <wa-card th:if="${products == null or products.isEmpty()}" class="wa-text-center wa-text-color-quiet wa-mb-xl wa-p-xxl">
+            <p th:if="${query != null and !query.isEmpty()}">
+                No products found for: <strong th:text="${query}"></strong>
+            </p>
+            <p th:if="${query == null or query.isEmpty()}">
+                No products found. The scheduled job will sync products automatically.
+            </p>
+        </wa-card>
+        
+        <!-- Add Product Form -->
+        <wa-card class="wa-p-xl wa-mt-xxl">
+            <h3 class="wa-mb-m">Add New Product</h3>
+            <form id="add-product-form"
+                  hx-post="/products" 
+                  hx-target="#products-container" 
+                  hx-swap="innerHTML">
+                <div class="wa-mb-l">
+                    <wa-input 
+                        type="text"
+                        id="title" 
+                        name="title" 
+                        placeholder="Enter product title"
+                        required
+                        label="Product Title"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <div class="wa-mb-l">
+                    <wa-input 
+                        type="text"
+                        id="productType" 
+                        name="productType" 
+                        placeholder="Enter product type (optional)"
+                        label="Product Type"
+                        class="wa-width-full">
+                    </wa-input>
+                </div>
+                
+                <wa-button type="submit" variant="success" class="wa-mt-s">
+                    Add Product
+                </wa-button>
+            </form>
+        </wa-card>
+    </div>
+</body>
+</html>
