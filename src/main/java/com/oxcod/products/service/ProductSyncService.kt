@@ -73,7 +73,8 @@ class ProductSyncService(
                         newProducts.add(Product(
                             id = fammeProduct.id,
                             title = fammeProduct.title,
-                            productType = fammeProduct.productType
+                            productType = fammeProduct.productType,
+                            tags = fammeProduct.tags
                         ))
                         
                         // Add this product's variants

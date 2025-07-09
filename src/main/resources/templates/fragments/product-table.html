@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
     <div th:fragment="product-table" id="product-table-fragment">
-        
+
         <!-- Search Section -->
         <section class="wa-mb-6">
-            <wa-input 
-                type="text" 
+            <wa-input
+                type="text"
                 placeholder="Search products by title..."
                 name="query"
                 th:value="${query}"
@@ -19,7 +19,7 @@
                 <wa-icon name="search" slot="prefix"></wa-icon>
             </wa-input>
         </section>
-        
+
         <!-- Search Results Info -->
         <div th:if="${query != null and !query.isEmpty()}" class="wa-mb-4">
             <wa-alert variant="primary" open>
@@ -57,6 +57,7 @@
                                 </a>
                             </th>
                             <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Product Type</th>
+                            <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Tags</th>
                             <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Variants</th>
                             <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Created At</th>
                             <th class="wa-p-3 wa-text-left wa-font-semibold wa-text-neutral-700">Updated At</th>
@@ -69,6 +70,17 @@
                             <td class="wa-p-3 wa-font-mono wa-text-sm wa-text-neutral-600" th:text="${item.product.id}"></td>
                             <td class="wa-p-3 wa-font-medium wa-text-neutral-900" th:text="${item.product.title}"></td>
                             <td class="wa-p-3 wa-text-neutral-600" th:text="${item.product.productType ?: 'N/A'}"></td>
+                            <td class="wa-p-3">
+                                <div th:if="${item.product.tags != null and !item.product.tags.isEmpty()}" class="wa-flex wa-flex-wrap wa-gap-1">
+                                    <wa-badge th:each="tag : ${item.product.tags}" 
+                                             variant="neutral" 
+                                             size="small" 
+                                             class="wa-text-xs"
+                                             th:text="${tag}">
+                                    </wa-badge>
+                                </div>
+                                <span th:if="${item.product.tags == null or item.product.tags.isEmpty()}" class="wa-text-sm wa-text-neutral-400">No tags</span>
+                            </td>
                             <td class="wa-p-3">
                                 <div th:if="${!item.variants.isEmpty()}">
                                     <div th:each="variant : ${item.variants}" class="wa-text-sm wa-text-neutral-600 wa-leading-relaxed">

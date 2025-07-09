@@ -7,6 +7,7 @@ data class FammeProduct(
     val title: String,
     @JsonProperty("product_type")
     val productType: String?,
+    val tags: List<String>? = null,
     val variants: List<FammeVariant>
 )
 
